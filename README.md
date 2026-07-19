@@ -3,7 +3,7 @@
 A self-hosted, forkable interactive map — like the Genshin Impact map, but for
 whatever game you want. Built as a static site (works on GitHub Pages,
 Cloudflare Pages, Netlify, or any static host), with no backend: pull
-requests *are* the moderation queue.
+requests *are* the moderation queue..
 
 - **Verified markers** — merged into `main`, visible to everyone.
 - **Pending markers** — proposed in an open pull request, shown only in the
