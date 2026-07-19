@@ -23,6 +23,8 @@
 
   <div class="spacer"></div>
 
+  <button class="btn" id="progress-btn">Progress</button>
+  <button class="btn" id="owner-btn">Owner mode</button>
   <button class="btn" id="legend-btn">Legend</button>
   <button class="btn primary" id="add-marker-btn">+ Propose marker</button>
 </div>
@@ -56,8 +58,15 @@
         <option>other</option>
       </select>
 
-      <label for="f-image">Image URL (optional)</label>
-      <input id="f-image" type="text" placeholder="https://... or images/markers/yourfile.jpg" />
+      <label for="f-photo">Attach a photo</label>
+      <input id="f-photo" type="file" accept="image/*" />
+      <p class="hint" id="photo-preview-hint"></p>
+
+      <label for="f-image">…or an image URL (used if no photo attached)</label>
+      <input id="f-image" type="text" placeholder="https://... e.g. an Imgur or Discord link" />
+
+      <label for="f-tags">Tags (comma-separated, optional)</label>
+      <input id="f-tags" type="text" placeholder="e.g. region-a, rare, night-only" />
 
       <label for="f-comment">Comment</label>
       <textarea id="f-comment" placeholder="Anything future explorers should know."></textarea>
@@ -66,7 +75,7 @@
     </div>
     <footer>
       <button class="btn" id="marker-modal-cancel">Cancel</button>
-      <button class="btn primary" id="marker-modal-submit">Generate GitHub link</button>
+      <button class="btn primary" id="marker-modal-submit">Submit</button>
     </footer>
   </div>
 </div>
@@ -87,6 +96,71 @@
     </div>
     <footer>
       <button class="btn primary" id="legend-close">Got it</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Progress / completion modal -->
+<div class="modal-backdrop" id="progress-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">Your progress</div>
+      <h2 id="progress-count">— completed</h2>
+    </header>
+    <div class="content">
+      <p class="hint">
+        Completion is tracked only in this browser — it isn't shared with
+        anyone else viewing the map, and doesn't touch GitHub.
+      </p>
+
+      <label>Quick reset</label>
+      <button class="btn" id="uncomplete-chests-btn" style="width:100%;">Uncomplete all chests</button>
+
+      <label for="tag-reset-input">Uncomplete by tag</label>
+      <div style="display:flex; gap:8px;">
+        <input id="tag-reset-input" type="text" placeholder="e.g. region-a" style="flex:1;" />
+        <button class="btn" id="tag-reset-btn">Go</button>
+      </div>
+      <div id="tag-chip-list" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;"></div>
+
+      <label style="margin-top:20px;">Danger zone</label>
+      <button class="btn" id="uncomplete-all-btn" style="width:100%; border-color:var(--danger); color:var(--danger);">Uncomplete everything</button>
+    </div>
+    <footer>
+      <button class="btn primary" id="progress-close">Done</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Owner mode: connect a GitHub token for direct publish + photo upload -->
+<div class="modal-backdrop" id="owner-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">Owner mode</div>
+      <h2 id="owner-modal-title">Connect your GitHub token</h2>
+    </header>
+    <div class="content">
+      <p class="hint">
+        Paste a <b>fine-grained personal access token</b> scoped only to this
+        repo, with <b>Contents: Read and write</b> permission. This lets you
+        attach photos directly (uploaded straight into the repo) and publish
+        your own markers to <code>main</code> instantly, skipping the pull
+        request step other people go through.
+        <br><br>
+        The token is stored only in this browser's local storage. It is
+        never sent anywhere except directly to <code>api.github.com</code>
+        from your own device. Don't paste it on a shared computer, and don't
+        share this token with anyone.
+        <br><br>
+        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a fine-grained token →</a>
+      </p>
+      <label for="owner-token-input">Token</label>
+      <input id="owner-token-input" type="password" placeholder="github_pat_..." />
+      <p class="hint" id="owner-status"></p>
+    </div>
+    <footer>
+      <button class="btn" id="owner-disconnect-btn">Disconnect</button>
+      <button class="btn primary" id="owner-connect-btn">Connect</button>
     </footer>
   </div>
 </div>

@@ -1,6 +1,7 @@
 {
   "title": "Example Marker — delete me",
   "category": "chest",
+  "tags": ["chest", "region-a"],
   "x": 500,
   "y": 500,
   "image": "images/markers/example.jpg",

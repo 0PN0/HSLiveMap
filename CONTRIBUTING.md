@@ -28,12 +28,17 @@ If you'd rather do it by hand:
    {
      "title": "Hidden chest behind waterfall",
      "category": "chest",
+     "tags": ["region-a", "rare"],
      "x": 1450,
      "y": 860,
      "image": "https://i.imgur.com/yourimage.jpg",
      "comment": "Need levitation or a running start off the ledge."
    }
    ```
+
+   `tags` is optional — use it for anything you want to filter or bulk-reset
+   by later (a region, a rarity, an event name). `category` also counts as
+   an implicit tag for that purpose.
 
    `x`/`y` are pixel coordinates in the map's own coordinate space — the
    easiest way to get these right is still the in-app click flow above,
