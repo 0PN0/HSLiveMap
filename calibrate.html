@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calibrate Map Tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  #cal-topbar { position: fixed; top:0; left:0; right:0; z-index: 50; }
+  #cal-sidebar {
+    position: fixed; top: 66px; right: 0; bottom: 0; width: 280px;
+    background: var(--ink-2); border-left: 1px solid var(--line);
+    padding: 16px; overflow-y: auto; font-family: var(--font-mono); font-size: 12.5px;
+  }
+  #cal-sidebar h3 { font-family: var(--font-display); font-size: 15px; margin: 0 0 10px; }
+  #cal-sidebar .hint { color: var(--parchment-dim); line-height: 1.5; margin-bottom: 14px; }
+  #cal-sidebar label { display:block; margin: 10px 0 4px; color: var(--parchment-dim); text-transform: uppercase; letter-spacing: .05em; font-size: 10.5px;}
+  #file-input { width: 100%; font-size: 11px; }
+  #workspace-wrap {
+    position: fixed; top: 66px; left: 0; right: 280px; bottom: 0;
+    overflow: auto; background: var(--ink);
+    background-image: radial-gradient(var(--line) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  #workspace {
+    position: relative;
+    width: 6000px; height: 6000px;
+    transform-origin: 0 0;
+  }
+  .tile {
+    position: absolute;
+    border: 1px solid rgba(199,138,62,0.6);
+    cursor: move;
+    user-select: none;
+  }
+  .tile.selected { outline: 2px solid var(--brass); z-index: 5; }
+  .tile img { width: 100%; height: 100%; display: block; pointer-events: none; }
+  .tile .handle {
+    position: absolute; right: -6px; bottom: -6px;
+    width: 14px; height: 14px;
+    background: var(--brass); border: 1px solid var(--ink);
+    cursor: nwse-resize;
+  }
+  .tile .label {
+    position: absolute; top: -20px; left: 0;
+    font-family: var(--font-mono); font-size: 10px;
+    background: var(--ink); color: var(--brass);
+    padding: 2px 6px; white-space: nowrap;
+  }
+  .tile-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 0; border-bottom: 1px solid var(--line);
+  }
+  .tile-row button { background:none; border:none; color: var(--danger); cursor:pointer; font-family: var(--font-mono); }
+  #zoom-controls { position: fixed; bottom: 20px; left: 20px; z-index: 50; display:flex; gap:6px; }
+</style>
+</head>
+<body>
+
+<div id="topbar" style="position:fixed;">
+  <h1><span class="eyebrow">Setup tool</span>Calibrate Tiles</h1>
+  <div class="spacer"></div>
+  <button class="btn" id="snap-toggle">Snap: off</button>
+  <button class="btn primary" id="export-btn">Export tiles.json</button>
+</div>
+
+<div id="workspace-wrap">
+  <div id="workspace"></div>
+</div>
+
+<div id="zoom-controls">
+  <button class="btn" id="zoom-out">−</button>
+  <button class="btn" id="zoom-reset">100%</button>
+  <button class="btn" id="zoom-in">+</button>
+</div>
+
+<div id="cal-sidebar">
+  <h3>Align your screenshots</h3>
+  <p class="hint">
+    Load your map screenshots below, then drag each onto the grid and drag the brass corner handle to resize until edges line up with neighboring tiles. Scroll the canvas to pan; use +/− to zoom the view (doesn't affect exported coordinates).
+  </p>
+  <label>Add images</label>
+  <input id="file-input" type="file" accept="image/*" multiple />
+  <div id="tile-list" style="margin-top:16px;"></div>
+</div>
+
+<div class="modal-backdrop" id="export-modal">
+  <div class="modal">
+    <header><div class="eyebrow">Export</div><h2>tiles.json ready</h2></header>
+    <div class="content">
+      <p class="hint">
+        Downloaded. Move it to <code>data/tiles.json</code> in your repo, and make sure
+        each image file listed inside it exists at that same path under <code>images/tiles/</code>.
+      </p>
+    </div>
+    <footer><button class="btn primary" id="export-close">Done</button></footer>
+  </div>
+</div>
+
+<script src="js/calibrate.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Map Explorer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="topbar">
+  <h1><span class="eyebrow">Field Map</span>Explorer</h1>
+
+  <div class="pill-toggle" id="view-toggle">
+    <button class="active" data-view="verified">Verified</button>
+    <button data-view="all">Verified + Pending</button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <button class="btn" id="legend-btn">Legend</button>
+  <button class="btn primary" id="add-marker-btn">+ Propose marker</button>
+</div>
+
+<div id="map" class="map-grid-bg"></div>
+
+<div id="place-banner">Click anywhere on the map to place your marker · <span id="cancel-place" style="text-decoration:underline;cursor:pointer;">cancel</span></div>
+<div id="status-toast"></div>
+
+<!-- Marker proposal modal -->
+<div class="modal-backdrop" id="marker-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">New marker</div>
+      <h2>Propose a waypoint</h2>
+    </header>
+    <div class="content">
+      <div class="coord-readout" id="coord-readout">x: —, y: —</div>
+
+      <label for="f-title">Title</label>
+      <input id="f-title" type="text" placeholder="e.g. Hidden chest behind waterfall" />
+
+      <label for="f-category">Category</label>
+      <select id="f-category">
+        <option>chest</option>
+        <option>collectible</option>
+        <option>quest</option>
+        <option>enemy / boss</option>
+        <option>resource / material</option>
+        <option>viewpoint</option>
+        <option>other</option>
+      </select>
+
+      <label for="f-image">Image URL (optional)</label>
+      <input id="f-image" type="text" placeholder="https://... or images/markers/yourfile.jpg" />
+
+      <label for="f-comment">Comment</label>
+      <textarea id="f-comment" placeholder="Anything future explorers should know."></textarea>
+
+      <p class="hint" id="form-hint"></p>
+    </div>
+    <footer>
+      <button class="btn" id="marker-modal-cancel">Cancel</button>
+      <button class="btn primary" id="marker-modal-submit">Generate GitHub link</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Legend / help modal -->
+<div class="modal-backdrop" id="legend-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">Legend</div>
+      <h2>How this map works</h2>
+    </header>
+    <div class="content">
+      <p class="hint">
+        <span style="color:var(--verified)">●</span> <b>Verified</b> — merged into <code>main</code>, visible to everyone.<br><br>
+        <span style="color:var(--pending)">●</span> <b>Pending</b> — proposed in an open pull request, not yet reviewed. Only shown when you switch to "Verified + Pending".<br><br>
+        Click <b>+ Propose marker</b>, then click a spot on the map. You'll fill in a short form and get a one-click link that opens GitHub with your marker file pre-filled — just review it and click "Propose new file" to open a pull request.
+      </p>
+    </div>
+    <footer>
+      <button class="btn primary" id="legend-close">Got it</button>
+    </footer>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
