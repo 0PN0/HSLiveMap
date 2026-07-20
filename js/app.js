@@ -480,22 +480,26 @@
       return;
     }
 
-    // ── no token: fall back to the one-click PR flow (URL only, no upload) ──
+    // ── no token: fall back to the GitHub Issue flow (URL only, no upload) ──
     const payload = { title, category, tags, x: pendingCoord.x, y: pendingCoord.y, image: imageUrl || "", comment };
-    const content = JSON.stringify(payload, null, 2) + "\n";
-    const url =
-      `https://github.com/${CFG.owner}/${CFG.repo}/new/${CFG.branch}` +
-      `?filename=${encodeURIComponent(jsonPath)}&value=${encodeURIComponent(content)}`;
+    const content = JSON.stringify(payload, null, 2);
+    
+    const issueTitle = `New Marker Proposal: ${title}`;
+    const issueBody = `Please add the following marker:\n\n\`\`\`json\n${content}\n\`\`\``;
+    
+    const url = 
+      `https://github.com/${CFG.owner}/${CFG.repo}/issues/new` +
+      `?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
 
     if (photoFile && !imageUrl) {
-      hint.textContent = "Photo uploads need an owner-mode connection — paste an image URL instead, or ask the map owner to add this one.";
+      hint.textContent = "Photo uploads need an owner-mode connection — paste an image URL instead, or include a link in the issue.";
       hint.style.color = "var(--danger)";
       return;
     }
 
     window.open(url, "_blank", "noopener");
     markerModal.classList.remove("show");
-    toast("Opened GitHub — review the file, then click \"Propose new file\" to open a pull request.", 6000);
+    toast("Opened GitHub — click \"Submit new issue\" to propose your marker.", 6000);
     resetMarkerForm(hint);
   };
 
