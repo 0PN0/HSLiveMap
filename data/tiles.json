@@ -1,3 +1,53 @@
 {
-  "tiles": []
+  "tiles": [
+    {
+      "file": "images/tiles/001.PNG",
+      "x": 3352,
+      "y": 2688,
+      "width": 597,
+      "height": 823
+    },
+    {
+      "file": "images/tiles/002.PNG",
+      "x": 3624,
+      "y": 2792,
+      "width": 776,
+      "height": 640
+    },
+    {
+      "file": "images/tiles/003.PNG",
+      "x": 3864,
+      "y": 2448,
+      "width": 784,
+      "height": 752
+    },
+    {
+      "file": "images/tiles/004.PNG",
+      "x": 4160,
+      "y": 2824,
+      "width": 784,
+      "height": 680
+    },
+    {
+      "file": "images/tiles/005.PNG",
+      "x": 4103,
+      "y": 3255,
+      "width": 779,
+      "height": 688
+    },
+    {
+      "file": "images/tiles/006.PNG",
+      "x": 3743,
+      "y": 3382,
+      "width": 721,
+      "height": 804
+    },
+    {
+      "file": "images/tiles/007.PNG",
+      "x": 3220,
+      "y": 3322,
+      "width": 762,
+      "height": 802
+    }
+  ]
 }
