@@ -1,9 +1,9 @@
 {
   "title": "Example Marker — delete me",
   "category": "chest",
-  "tags": ["chest", "region-a"],
+  "tags": ["test", "Okuu"],
   "x": 500,
   "y": 500,
   "image": "images/markers/example.jpg",
-  "comment": "This is a template. Each marker lives in its own file under data/markers/. Copy this format when proposing a new one."
+  "comment": "This is a template. Add coords here, then a helpful description."
 }
