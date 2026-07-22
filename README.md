@@ -9,7 +9,7 @@ Reset all discovered chests on chest reset.
 Create a marker if discover a chest in game \
   It needs a: \
     -Name \
-    -Discord/imgur image link \
+    -image link from something like https://imgtree.co/ or imgur \
     -Tag for region found in \
     -Description: Coords, how to find, anything else \
  \
