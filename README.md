@@ -1,8 +1,7 @@
 # HSLiveMap
 
-https://hslivemap.opno.workers.dev/ \
-
 For Hitsatu Hytale server \
+https://hslivemap.opno.workers.dev/
  \
 An interactive map of the Hitsatu Dungeon world. \
 Mark chests that have been discorvered, unmark regions by tag if an event resets them. \
