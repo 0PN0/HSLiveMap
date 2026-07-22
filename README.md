@@ -1,5 +1,7 @@
 # HSLiveMap
 
+https://hslivemap.opno.workers.dev/ \
+
 For Hitsatu Hytale server \
  \
 An interactive map of the Hitsatu Dungeon world. \
