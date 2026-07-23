@@ -2,9 +2,9 @@
   "tiles": [
     {
       "file": "images/tiles/fullimg.png",
-      "x": 2712,
+      "x": 2062,
       "y": 1888,
-      "width": 1400,
+      "width": 2049,
       "height": 1290
     }
   ]
