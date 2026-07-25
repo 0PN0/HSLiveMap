@@ -44,6 +44,13 @@
     <div class="content">
       <div class="coord-readout" id="coord-readout">x: —, y: —</div>
 
+      <label>In-game coordinates <span style="font-weight:400;color:var(--parchment-dim);">(x/z filled in from where you clicked — check and edit if needed; y is height, fill it in yourself)</span></label>
+      <div class="ig-coord-row" style="display:flex; gap:8px;">
+        <input id="f-xig" type="number" step="1" placeholder="X" style="flex:1;" />
+        <input id="f-yig" type="number" step="1" placeholder="Y (height)" style="flex:1;" />
+        <input id="f-zig" type="number" step="1" placeholder="Z" style="flex:1;" />
+      </div>
+
       <label for="f-title">Title</label>
       <input id="f-title" type="text" placeholder="e.g. Hidden chest behind waterfall" />
 
@@ -69,7 +76,7 @@
       <input id="f-tags" type="text" placeholder="e.g. solmara, blackfen, hollow, etc" />
 
       <label for="f-comment">Comment</label>
-      <textarea id="f-comment" placeholder="X,Y,Z corrdinates - How to Find it - Anything else (even your username)"></textarea>
+      <textarea id="f-comment" placeholder="How to find it - Anything else (even your username)"></textarea>
 
       <p class="hint" id="form-hint"></p>
     </div>
