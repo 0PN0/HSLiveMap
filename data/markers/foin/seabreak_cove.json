@@ -1,0 +1,2246 @@
+[
+  {
+    "title": "seabreak_cove-chest-001",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2798,
+    "y": 2755,
+    "image": "",
+    "comment": "-375, 57, -7"
+  },
+  {
+    "title": "seabreak_cove-chest-002",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2795,
+    "y": 2760,
+    "image": "",
+    "comment": "-377, 63, -4"
+  },
+  {
+    "title": "seabreak_cove-chest-003",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2803,
+    "y": 2778,
+    "image": "",
+    "comment": "-372, 57, 7"
+  },
+  {
+    "title": "seabreak_cove-chest-004",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2783,
+    "y": 2797,
+    "image": "",
+    "comment": "-384, 57, 19"
+  },
+  {
+    "title": "seabreak_cove-chest-005",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2796,
+    "y": 2797,
+    "image": "",
+    "comment": "-376, 60, 19"
+  },
+  {
+    "title": "seabreak_cove-chest-006",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2785,
+    "y": 2808,
+    "image": "",
+    "comment": "-383, 60, 26"
+  },
+  {
+    "title": "seabreak_cove-chest-007",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2806,
+    "y": 2832,
+    "image": "",
+    "comment": "-370, 60, 41"
+  },
+  {
+    "title": "seabreak_cove-chest-008",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2804,
+    "y": 2839,
+    "image": "",
+    "comment": "-371, 64, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-009",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2778,
+    "y": 2871,
+    "image": "",
+    "comment": "-387, 57, 65"
+  },
+  {
+    "title": "seabreak_cove-chest-010",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2782,
+    "y": 2866,
+    "image": "",
+    "comment": "-385, 63, 62"
+  },
+  {
+    "title": "seabreak_cove-chest-011",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2751,
+    "y": 2858,
+    "image": "",
+    "comment": "-404, 60, 57"
+  },
+  {
+    "title": "seabreak_cove-chest-012",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2753,
+    "y": 2852,
+    "image": "",
+    "comment": "-403, 64, 53"
+  },
+  {
+    "title": "seabreak_cove-chest-013",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2778,
+    "y": 2832,
+    "image": "",
+    "comment": "-387, 57, 41"
+  },
+  {
+    "title": "seabreak_cove-chest-014",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2774,
+    "y": 2829,
+    "image": "",
+    "comment": "-390, 63, 39"
+  },
+  {
+    "title": "seabreak_cove-chest-015",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2308,
+    "y": 2814,
+    "image": "",
+    "comment": "-677, 56, 30"
+  },
+  {
+    "title": "seabreak_cove-chest-016",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2261,
+    "y": 2770,
+    "image": "",
+    "comment": "-706, 59, 3"
+  },
+  {
+    "title": "seabreak_cove-chest-017",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2357,
+    "y": 2837,
+    "image": "",
+    "comment": "-647, 55, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-018",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2376,
+    "y": 2842,
+    "image": "",
+    "comment": "-635, 54, 47"
+  },
+  {
+    "title": "seabreak_cove-chest-019",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2383,
+    "y": 2856,
+    "image": "",
+    "comment": "-631, 54, 56"
+  },
+  {
+    "title": "seabreak_cove-chest-020",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2376,
+    "y": 2864,
+    "image": "",
+    "comment": "-635, 60, 61"
+  },
+  {
+    "title": "seabreak_cove-chest-021",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2372,
+    "y": 2845,
+    "image": "",
+    "comment": "-638, 65, 49"
+  },
+  {
+    "title": "seabreak_cove-chest-022",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2376,
+    "y": 2847,
+    "image": "",
+    "comment": "-635, 83, 50"
+  },
+  {
+    "title": "seabreak_cove-chest-023",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2367,
+    "y": 2882,
+    "image": "",
+    "comment": "-641, 56, 72"
+  },
+  {
+    "title": "seabreak_cove-chest-024",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2339,
+    "y": 2890,
+    "image": "",
+    "comment": "-658, 58, 77"
+  },
+  {
+    "title": "seabreak_cove-chest-025",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2355,
+    "y": 2901,
+    "image": "",
+    "comment": "-648, 58, 84"
+  },
+  {
+    "title": "seabreak_cove-chest-026",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2329,
+    "y": 2911,
+    "image": "",
+    "comment": "-664, 58, 90"
+  },
+  {
+    "title": "seabreak_cove-chest-027",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2248,
+    "y": 2874,
+    "image": "",
+    "comment": "-714, 52, 67"
+  },
+  {
+    "title": "seabreak_cove-chest-028",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2247,
+    "y": 2879,
+    "image": "",
+    "comment": "-715, 52, 70"
+  },
+  {
+    "title": "seabreak_cove-chest-029",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2258,
+    "y": 2866,
+    "image": "",
+    "comment": "-708, 52, 62"
+  },
+  {
+    "title": "seabreak_cove-chest-030",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2260,
+    "y": 2856,
+    "image": "",
+    "comment": "-707, 52, 56"
+  },
+  {
+    "title": "seabreak_cove-chest-031",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2235,
+    "y": 2856,
+    "image": "",
+    "comment": "-722, 52, 56"
+  },
+  {
+    "title": "seabreak_cove-chest-032",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2234,
+    "y": 2846,
+    "image": "",
+    "comment": "-723, 52, 50"
+  },
+  {
+    "title": "seabreak_cove-chest-033",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2237,
+    "y": 2824,
+    "image": "",
+    "comment": "-721, 53, 36"
+  },
+  {
+    "title": "seabreak_cove-chest-034",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2247,
+    "y": 2822,
+    "image": "",
+    "comment": "-715, 52, 35"
+  },
+  {
+    "title": "seabreak_cove-chest-035",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2260,
+    "y": 2837,
+    "image": "",
+    "comment": "-707, 52, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-036",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2245,
+    "y": 2827,
+    "image": "",
+    "comment": "-716, 52, 38"
+  },
+  {
+    "title": "seabreak_cove-chest-037",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2258,
+    "y": 2846,
+    "image": "",
+    "comment": "-708, 52, 50"
+  },
+  {
+    "title": "seabreak_cove-chest-038",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2208,
+    "y": 2770,
+    "image": "",
+    "comment": "-739, 64, 3"
+  },
+  {
+    "title": "seabreak_cove-chest-039",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2217,
+    "y": 2762,
+    "image": "",
+    "comment": "-733, 64, -2"
+  },
+  {
+    "title": "seabreak_cove-chest-040",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2217,
+    "y": 2767,
+    "image": "",
+    "comment": "-733, 66, 1"
+  },
+  {
+    "title": "seabreak_cove-chest-041",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2211,
+    "y": 2767,
+    "image": "",
+    "comment": "-737, 65, 1"
+  },
+  {
+    "title": "seabreak_cove-chest-042",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2208,
+    "y": 2762,
+    "image": "",
+    "comment": "-739, 64, -2"
+  },
+  {
+    "title": "seabreak_cove-chest-043",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2208,
+    "y": 2753,
+    "image": "",
+    "comment": "-739, 65, -8"
+  },
+  {
+    "title": "seabreak_cove-chest-044",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2208,
+    "y": 2759,
+    "image": "",
+    "comment": "-739, 64, -4"
+  },
+  {
+    "title": "seabreak_cove-chest-045",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2216,
+    "y": 2754,
+    "image": "",
+    "comment": "-734, 64, -7"
+  },
+  {
+    "title": "seabreak_cove-chest-046",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2219,
+    "y": 2749,
+    "image": "",
+    "comment": "-732, 65, -10"
+  },
+  {
+    "title": "seabreak_cove-chest-047",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2221,
+    "y": 2743,
+    "image": "",
+    "comment": "-731, 64, -14"
+  },
+  {
+    "title": "seabreak_cove-chest-048",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2217,
+    "y": 2743,
+    "image": "",
+    "comment": "-733, 65, -14"
+  },
+  {
+    "title": "seabreak_cove-chest-049",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2208,
+    "y": 2749,
+    "image": "",
+    "comment": "-739, 64, -10"
+  },
+  {
+    "title": "seabreak_cove-chest-050",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2217,
+    "y": 2730,
+    "image": "",
+    "comment": "-733, 64, -22"
+  },
+  {
+    "title": "seabreak_cove-chest-051",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2217,
+    "y": 2733,
+    "image": "",
+    "comment": "-733, 66, -20"
+  },
+  {
+    "title": "seabreak_cove-chest-052",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2209,
+    "y": 2732,
+    "image": "",
+    "comment": "-738, 63, -21"
+  },
+  {
+    "title": "seabreak_cove-chest-053",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2221,
+    "y": 2728,
+    "image": "",
+    "comment": "-731, 71, -23"
+  },
+  {
+    "title": "seabreak_cove-chest-054",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2219,
+    "y": 2748,
+    "image": "",
+    "comment": "-732, 71, -11"
+  },
+  {
+    "title": "seabreak_cove-chest-055",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2200,
+    "y": 2652,
+    "image": "",
+    "comment": "-744, 53, -70"
+  },
+  {
+    "title": "seabreak_cove-chest-056",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2219,
+    "y": 2669,
+    "image": "",
+    "comment": "-732, 52, -60"
+  },
+  {
+    "title": "seabreak_cove-chest-057",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2216,
+    "y": 2449,
+    "image": "",
+    "comment": "-734, 53, -196"
+  },
+  {
+    "title": "seabreak_cove-chest-058",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2209,
+    "y": 2391,
+    "image": "",
+    "comment": "-738, 57, -232"
+  },
+  {
+    "title": "seabreak_cove-chest-059",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2230,
+    "y": 2387,
+    "image": "",
+    "comment": "-725, 56, -234"
+  },
+  {
+    "title": "seabreak_cove-chest-060",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2240,
+    "y": 2360,
+    "image": "",
+    "comment": "-719, 56, -251"
+  },
+  {
+    "title": "seabreak_cove-chest-061",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2279,
+    "y": 2391,
+    "image": "",
+    "comment": "-695, 53, -232"
+  },
+  {
+    "title": "seabreak_cove-chest-062",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2460,
+    "y": 2540,
+    "image": "",
+    "comment": "-583, 84, -140"
+  },
+  {
+    "title": "seabreak_cove-chest-063",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2506,
+    "y": 2540,
+    "image": "",
+    "comment": "-555, 84, -140"
+  },
+  {
+    "title": "seabreak_cove-chest-064",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2511,
+    "y": 2543,
+    "image": "",
+    "comment": "-552, 84, -138"
+  },
+  {
+    "title": "seabreak_cove-chest-065",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2516,
+    "y": 2546,
+    "image": "",
+    "comment": "-549, 84, -136"
+  },
+  {
+    "title": "seabreak_cove-chest-066",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2504,
+    "y": 2575,
+    "image": "",
+    "comment": "-556, 84, -118"
+  },
+  {
+    "title": "seabreak_cove-chest-067",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2506,
+    "y": 2575,
+    "image": "",
+    "comment": "-555, 86, -118"
+  },
+  {
+    "title": "seabreak_cove-chest-068",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2498,
+    "y": 2575,
+    "image": "",
+    "comment": "-560, 89, -118"
+  },
+  {
+    "title": "seabreak_cove-chest-069",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2481,
+    "y": 2528,
+    "image": "",
+    "comment": "-570, 85, -147"
+  },
+  {
+    "title": "seabreak_cove-chest-070",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2485,
+    "y": 2528,
+    "image": "",
+    "comment": "-568, 85, -147"
+  },
+  {
+    "title": "seabreak_cove-chest-071",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2477,
+    "y": 2543,
+    "image": "",
+    "comment": "-573, 104, -138"
+  },
+  {
+    "title": "seabreak_cove-chest-072",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2462,
+    "y": 2538,
+    "image": "",
+    "comment": "-582, 98, -141"
+  },
+  {
+    "title": "seabreak_cove-chest-073",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2459,
+    "y": 2538,
+    "image": "",
+    "comment": "-584, 100, -141"
+  },
+  {
+    "title": "seabreak_cove-chest-074",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2496,
+    "y": 2562,
+    "image": "",
+    "comment": "-561, 100, -126"
+  },
+  {
+    "title": "seabreak_cove-chest-075",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2248,
+    "y": 2457,
+    "image": "",
+    "comment": "-714, 102, -191"
+  },
+  {
+    "title": "seabreak_cove-chest-076",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2250,
+    "y": 2455,
+    "image": "",
+    "comment": "-713, 102, -192"
+  },
+  {
+    "title": "seabreak_cove-chest-077",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2253,
+    "y": 2457,
+    "image": "",
+    "comment": "-711, 102, -191"
+  },
+  {
+    "title": "seabreak_cove-chest-078",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2254,
+    "y": 2457,
+    "image": "",
+    "comment": "-710, 102, -191"
+  },
+  {
+    "title": "seabreak_cove-chest-079",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2258,
+    "y": 2460,
+    "image": "",
+    "comment": "-708, 101, -189"
+  },
+  {
+    "title": "seabreak_cove-chest-080",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2451,
+    "y": 2546,
+    "image": "",
+    "comment": "-589, 84, -136"
+  },
+  {
+    "title": "seabreak_cove-chest-081",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2456,
+    "y": 2543,
+    "image": "",
+    "comment": "-586, 84, -138"
+  },
+  {
+    "title": "seabreak_cove-chest-082",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2499,
+    "y": 2499,
+    "image": "",
+    "comment": "-559, 137, -165"
+  },
+  {
+    "title": "seabreak_cove-chest-083",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2493,
+    "y": 2562,
+    "image": "",
+    "comment": "-563, 98, -126"
+  },
+  {
+    "title": "seabreak_cove-chest-084",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2509,
+    "y": 2541,
+    "image": "",
+    "comment": "-553, 111, -139"
+  },
+  {
+    "title": "seabreak_cove-chest-085",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2469,
+    "y": 2564,
+    "image": "",
+    "comment": "-578, 114, -125"
+  },
+  {
+    "title": "seabreak_cove-chest-086",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2483,
+    "y": 2573,
+    "image": "",
+    "comment": "-569, 113, -119"
+  },
+  {
+    "title": "seabreak_cove-chest-087",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2483,
+    "y": 2575,
+    "image": "",
+    "comment": "-569, 115, -118"
+  },
+  {
+    "title": "seabreak_cove-chest-088",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2483,
+    "y": 2567,
+    "image": "",
+    "comment": "-569, 118, -123"
+  },
+  {
+    "title": "seabreak_cove-chest-089",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2496,
+    "y": 2561,
+    "image": "",
+    "comment": "-561, 124, -127"
+  },
+  {
+    "title": "seabreak_cove-chest-090",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2517,
+    "y": 2556,
+    "image": "",
+    "comment": "-548, 130, -130"
+  },
+  {
+    "title": "seabreak_cove-chest-091",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2507,
+    "y": 2556,
+    "image": "",
+    "comment": "-554, 130, -130"
+  },
+  {
+    "title": "seabreak_cove-chest-092",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2452,
+    "y": 2561,
+    "image": "",
+    "comment": "-588, 134, -127"
+  },
+  {
+    "title": "seabreak_cove-chest-093",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2452,
+    "y": 2541,
+    "image": "",
+    "comment": "-588, 127, -139"
+  },
+  {
+    "title": "seabreak_cove-chest-094",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2444,
+    "y": 2544,
+    "image": "",
+    "comment": "-593, 117, -137"
+  },
+  {
+    "title": "seabreak_cove-chest-095",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2467,
+    "y": 2543,
+    "image": "",
+    "comment": "-579, 114, -138"
+  },
+  {
+    "title": "seabreak_cove-chest-096",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2467,
+    "y": 2551,
+    "image": "",
+    "comment": "-579, 117, -133"
+  },
+  {
+    "title": "seabreak_cove-chest-097",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2447,
+    "y": 2548,
+    "image": "",
+    "comment": "-591, 117, -135"
+  },
+  {
+    "title": "seabreak_cove-chest-098",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2446,
+    "y": 2514,
+    "image": "",
+    "comment": "-592, 131, -156"
+  },
+  {
+    "title": "seabreak_cove-chest-099",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2446,
+    "y": 2517,
+    "image": "",
+    "comment": "-592, 133, -154"
+  },
+  {
+    "title": "seabreak_cove-chest-100",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2475,
+    "y": 2512,
+    "image": "",
+    "comment": "-574, 132, -157"
+  },
+  {
+    "title": "seabreak_cove-chest-101",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2475,
+    "y": 2522,
+    "image": "",
+    "comment": "-574, 132, -151"
+  },
+  {
+    "title": "seabreak_cove-chest-102",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2499,
+    "y": 2561,
+    "image": "",
+    "comment": "-559, 122, -127"
+  },
+  {
+    "title": "seabreak_cove-chest-103",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2498,
+    "y": 2499,
+    "image": "",
+    "comment": "-560, 137, -165"
+  },
+  {
+    "title": "seabreak_cove-chest-104",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2496,
+    "y": 2499,
+    "image": "",
+    "comment": "-561, 137, -165"
+  },
+  {
+    "title": "seabreak_cove-chest-105",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2517,
+    "y": 2501,
+    "image": "",
+    "comment": "-548, 135, -164"
+  },
+  {
+    "title": "seabreak_cove-chest-106",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2517,
+    "y": 2504,
+    "image": "",
+    "comment": "-548, 137, -162"
+  },
+  {
+    "title": "seabreak_cove-chest-107",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2511,
+    "y": 2522,
+    "image": "",
+    "comment": "-552, 128, -151"
+  },
+  {
+    "title": "seabreak_cove-chest-108",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2486,
+    "y": 2551,
+    "image": "",
+    "comment": "-567, 112, -133"
+  },
+  {
+    "title": "seabreak_cove-chest-109",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2483,
+    "y": 2548,
+    "image": "",
+    "comment": "-569, 112, -135"
+  },
+  {
+    "title": "seabreak_cove-chest-110",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2467,
+    "y": 2544,
+    "image": "",
+    "comment": "-579, 112, -137"
+  },
+  {
+    "title": "seabreak_cove-chest-111",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2482,
+    "y": 2541,
+    "image": "",
+    "comment": "-570, 112, -139"
+  },
+  {
+    "title": "seabreak_cove-chest-112",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2491,
+    "y": 2544,
+    "image": "",
+    "comment": "-564, 122, -137"
+  },
+  {
+    "title": "seabreak_cove-chest-113",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2607,
+    "y": 2810,
+    "image": "",
+    "comment": "-493, 70, 27"
+  },
+  {
+    "title": "seabreak_cove-chest-114",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2611,
+    "y": 2810,
+    "image": "",
+    "comment": "-490, 74, 27"
+  },
+  {
+    "title": "seabreak_cove-chest-115",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2611,
+    "y": 2811,
+    "image": "",
+    "comment": "-490, 78, 28"
+  },
+  {
+    "title": "seabreak_cove-chest-116",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2608,
+    "y": 2810,
+    "image": "",
+    "comment": "-492, 83, 27"
+  },
+  {
+    "title": "seabreak_cove-chest-117",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2611,
+    "y": 2810,
+    "image": "",
+    "comment": "-490, 83, 27"
+  },
+  {
+    "title": "seabreak_cove-chest-118",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2607,
+    "y": 2816,
+    "image": "",
+    "comment": "-493, 83, 31"
+  },
+  {
+    "title": "seabreak_cove-chest-119",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2610,
+    "y": 2816,
+    "image": "",
+    "comment": "-491, 83, 31"
+  },
+  {
+    "title": "seabreak_cove-chest-120",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2490,
+    "y": 2824,
+    "image": "",
+    "comment": "-565, 61, 36"
+  },
+  {
+    "title": "seabreak_cove-chest-121",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2490,
+    "y": 2850,
+    "image": "",
+    "comment": "-565, 61, 52"
+  },
+  {
+    "title": "seabreak_cove-chest-122",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2564,
+    "y": 2834,
+    "image": "",
+    "comment": "-519, 56, 42"
+  },
+  {
+    "title": "seabreak_cove-chest-123",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2539,
+    "y": 2839,
+    "image": "",
+    "comment": "-535, 44, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-124",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2539,
+    "y": 2848,
+    "image": "",
+    "comment": "-535, 56, 51"
+  },
+  {
+    "title": "seabreak_cove-chest-125",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2503,
+    "y": 2829,
+    "image": "",
+    "comment": "-557, 56, 39"
+  },
+  {
+    "title": "seabreak_cove-chest-126",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2513,
+    "y": 2827,
+    "image": "",
+    "comment": "-551, 56, 38"
+  },
+  {
+    "title": "seabreak_cove-chest-127",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2513,
+    "y": 2827,
+    "image": "",
+    "comment": "-551, 57, 38"
+  },
+  {
+    "title": "seabreak_cove-chest-128",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2475,
+    "y": 2837,
+    "image": "",
+    "comment": "-574, 57, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-129",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2503,
+    "y": 2845,
+    "image": "",
+    "comment": "-557, 57, 49"
+  },
+  {
+    "title": "seabreak_cove-chest-130",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2503,
+    "y": 2845,
+    "image": "",
+    "comment": "-557, 56, 49"
+  },
+  {
+    "title": "seabreak_cove-chest-131",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2556,
+    "y": 2837,
+    "image": "",
+    "comment": "-524, 44, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-132",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2551,
+    "y": 2845,
+    "image": "",
+    "comment": "-527, 44, 49"
+  },
+  {
+    "title": "seabreak_cove-chest-133",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2527,
+    "y": 2839,
+    "image": "",
+    "comment": "-542, 44, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-134",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2514,
+    "y": 2839,
+    "image": "",
+    "comment": "-550, 44, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-135",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2513,
+    "y": 2839,
+    "image": "",
+    "comment": "-551, 44, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-136",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2477,
+    "y": 2837,
+    "image": "",
+    "comment": "-573, 49, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-137",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2548,
+    "y": 2824,
+    "image": "",
+    "comment": "-529, 49, 36"
+  },
+  {
+    "title": "seabreak_cove-chest-138",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2561,
+    "y": 2840,
+    "image": "",
+    "comment": "-521, 49, 46"
+  },
+  {
+    "title": "seabreak_cove-chest-139",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2532,
+    "y": 2853,
+    "image": "",
+    "comment": "-539, 49, 54"
+  },
+  {
+    "title": "seabreak_cove-chest-140",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2537,
+    "y": 2839,
+    "image": "",
+    "comment": "-536, 44, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-141",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2550,
+    "y": 2839,
+    "image": "",
+    "comment": "-528, 87, 45"
+  },
+  {
+    "title": "seabreak_cove-chest-142",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2550,
+    "y": 2835,
+    "image": "",
+    "comment": "-528, 103, 43"
+  },
+  {
+    "title": "seabreak_cove-chest-143",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2587,
+    "y": 2866,
+    "image": "",
+    "comment": "-505, 59, 62"
+  },
+  {
+    "title": "seabreak_cove-chest-144",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2521,
+    "y": 2845,
+    "image": "",
+    "comment": "-546, 105, 49"
+  },
+  {
+    "title": "seabreak_cove-chest-145",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2504,
+    "y": 2821,
+    "image": "",
+    "comment": "-556, 85, 34"
+  },
+  {
+    "title": "seabreak_cove-chest-146",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2485,
+    "y": 2847,
+    "image": "",
+    "comment": "-568, 107, 50"
+  },
+  {
+    "title": "seabreak_cove-chest-147",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2482,
+    "y": 2832,
+    "image": "",
+    "comment": "-570, 88, 41"
+  },
+  {
+    "title": "seabreak_cove-chest-148",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2495,
+    "y": 2884,
+    "image": "",
+    "comment": "-562, 54, 73"
+  },
+  {
+    "title": "seabreak_cove-chest-149",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2532,
+    "y": 2887,
+    "image": "",
+    "comment": "-539, 57, 75"
+  },
+  {
+    "title": "seabreak_cove-chest-150",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2561,
+    "y": 2902,
+    "image": "",
+    "comment": "-521, 62, 84"
+  },
+  {
+    "title": "seabreak_cove-chest-151",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2555,
+    "y": 2900,
+    "image": "",
+    "comment": "-525, 66, 83"
+  },
+  {
+    "title": "seabreak_cove-chest-152",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2569,
+    "y": 2869,
+    "image": "",
+    "comment": "-516, 60, 64"
+  },
+  {
+    "title": "seabreak_cove-chest-153",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2600,
+    "y": 2866,
+    "image": "",
+    "comment": "-497, 62, 62"
+  },
+  {
+    "title": "seabreak_cove-chest-154",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2589,
+    "y": 2877,
+    "image": "",
+    "comment": "-504, 62, 69"
+  },
+  {
+    "title": "seabreak_cove-chest-155",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2607,
+    "y": 2905,
+    "image": "",
+    "comment": "-493, 58, 86"
+  },
+  {
+    "title": "seabreak_cove-chest-156",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2594,
+    "y": 2905,
+    "image": "",
+    "comment": "-501, 61, 86"
+  },
+  {
+    "title": "seabreak_cove-chest-157",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2605,
+    "y": 2894,
+    "image": "",
+    "comment": "-494, 61, 79"
+  },
+  {
+    "title": "seabreak_cove-chest-158",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2621,
+    "y": 2882,
+    "image": "",
+    "comment": "-484, 58, 72"
+  },
+  {
+    "title": "seabreak_cove-chest-159",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2657,
+    "y": 2853,
+    "image": "",
+    "comment": "-462, 57, 54"
+  },
+  {
+    "title": "seabreak_cove-chest-160",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2657,
+    "y": 2866,
+    "image": "",
+    "comment": "-462, 60, 62"
+  },
+  {
+    "title": "seabreak_cove-chest-161",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2646,
+    "y": 2855,
+    "image": "",
+    "comment": "-469, 60, 55"
+  },
+  {
+    "title": "seabreak_cove-chest-162",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2726,
+    "y": 2722,
+    "image": "",
+    "comment": "-419, 64, -27"
+  },
+  {
+    "title": "seabreak_cove-chest-163",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2715,
+    "y": 2726,
+    "image": "",
+    "comment": "-426, 77, -25"
+  },
+  {
+    "title": "seabreak_cove-chest-164",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2718,
+    "y": 2722,
+    "image": "",
+    "comment": "-424, 77, -27"
+  },
+  {
+    "title": "seabreak_cove-chest-165",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2715,
+    "y": 2719,
+    "image": "",
+    "comment": "-426, 77, -29"
+  },
+  {
+    "title": "seabreak_cove-chest-166",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2712,
+    "y": 2722,
+    "image": "",
+    "comment": "-428, 77, -27"
+  },
+  {
+    "title": "seabreak_cove-chest-167",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2715,
+    "y": 2718,
+    "image": "",
+    "comment": "-426, 69, -30"
+  },
+  {
+    "title": "seabreak_cove-chest-168",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2782,
+    "y": 2632,
+    "image": "",
+    "comment": "-385, 55, -83"
+  },
+  {
+    "title": "seabreak_cove-chest-169",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2782,
+    "y": 2645,
+    "image": "",
+    "comment": "-385, 76, -75"
+  },
+  {
+    "title": "seabreak_cove-chest-170",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2775,
+    "y": 2635,
+    "image": "",
+    "comment": "-389, 76, -81"
+  },
+  {
+    "title": "seabreak_cove-chest-171",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2778,
+    "y": 2640,
+    "image": "",
+    "comment": "-387, 85, -78"
+  },
+  {
+    "title": "seabreak_cove-chest-172",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2739,
+    "y": 2556,
+    "image": "",
+    "comment": "-411, 58, -130"
+  },
+  {
+    "title": "seabreak_cove-chest-173",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2749,
+    "y": 2509,
+    "image": "",
+    "comment": "-405, 54, -159"
+  },
+  {
+    "title": "seabreak_cove-chest-174",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2744,
+    "y": 2525,
+    "image": "",
+    "comment": "-408, 56, -149"
+  },
+  {
+    "title": "seabreak_cove-chest-175",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2747,
+    "y": 2530,
+    "image": "",
+    "comment": "-406, 54, -146"
+  },
+  {
+    "title": "seabreak_cove-chest-176",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2730,
+    "y": 2533,
+    "image": "",
+    "comment": "-417, 54, -144"
+  },
+  {
+    "title": "seabreak_cove-chest-177",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2725,
+    "y": 2524,
+    "image": "",
+    "comment": "-420, 53, -150"
+  },
+  {
+    "title": "seabreak_cove-chest-178",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2731,
+    "y": 2533,
+    "image": "",
+    "comment": "-416, 58, -144"
+  },
+  {
+    "title": "seabreak_cove-chest-179",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2731,
+    "y": 2503,
+    "image": "",
+    "comment": "-416, 53, -163"
+  },
+  {
+    "title": "seabreak_cove-chest-180",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2759,
+    "y": 2485,
+    "image": "",
+    "comment": "-399, 54, -174"
+  },
+  {
+    "title": "seabreak_cove-chest-181",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2741,
+    "y": 2483,
+    "image": "",
+    "comment": "-410, 58, -175"
+  },
+  {
+    "title": "seabreak_cove-chest-182",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2872,
+    "y": 2441,
+    "image": "",
+    "comment": "-329, 65, -201"
+  },
+  {
+    "title": "seabreak_cove-chest-183",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2866,
+    "y": 2445,
+    "image": "",
+    "comment": "-333, 65, -199"
+  },
+  {
+    "title": "seabreak_cove-chest-184",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2872,
+    "y": 2438,
+    "image": "",
+    "comment": "-329, 71, -203"
+  },
+  {
+    "title": "seabreak_cove-chest-185",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2866,
+    "y": 2448,
+    "image": "",
+    "comment": "-333, 76, -197"
+  },
+  {
+    "title": "seabreak_cove-chest-186",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2872,
+    "y": 2438,
+    "image": "",
+    "comment": "-329, 76, -203"
+  },
+  {
+    "title": "seabreak_cove-chest-187",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2864,
+    "y": 2449,
+    "image": "",
+    "comment": "-334, 81, -196"
+  },
+  {
+    "title": "seabreak_cove-chest-188",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2697,
+    "y": 2435,
+    "image": "",
+    "comment": "-437, 59, -205"
+  },
+  {
+    "title": "seabreak_cove-chest-189",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2697,
+    "y": 2431,
+    "image": "",
+    "comment": "-437, 59, -207"
+  },
+  {
+    "title": "seabreak_cove-chest-190",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2647,
+    "y": 2433,
+    "image": "",
+    "comment": "-468, 59, -206"
+  },
+  {
+    "title": "seabreak_cove-chest-191",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2640,
+    "y": 2423,
+    "image": "",
+    "comment": "-472, 98, -212"
+  },
+  {
+    "title": "seabreak_cove-chest-192",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2705,
+    "y": 2443,
+    "image": "",
+    "comment": "-432, 97, -200"
+  },
+  {
+    "title": "seabreak_cove-chest-193",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2679,
+    "y": 2435,
+    "image": "",
+    "comment": "-448, 92, -205"
+  },
+  {
+    "title": "seabreak_cove-chest-194",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2681,
+    "y": 2435,
+    "image": "",
+    "comment": "-447, 77, -205"
+  },
+  {
+    "title": "seabreak_cove-chest-195",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2645,
+    "y": 2435,
+    "image": "",
+    "comment": "-469, 76, -205"
+  },
+  {
+    "title": "seabreak_cove-chest-196",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2704,
+    "y": 2423,
+    "image": "",
+    "comment": "-433, 57, -212"
+  },
+  {
+    "title": "seabreak_cove-chest-197",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2704,
+    "y": 2443,
+    "image": "",
+    "comment": "-433, 57, -200"
+  },
+  {
+    "title": "seabreak_cove-chest-198",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2710,
+    "y": 2438,
+    "image": "",
+    "comment": "-429, 57, -203"
+  },
+  {
+    "title": "seabreak_cove-chest-199",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2718,
+    "y": 2440,
+    "image": "",
+    "comment": "-424, 57, -202"
+  },
+  {
+    "title": "seabreak_cove-chest-200",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2723,
+    "y": 2433,
+    "image": "",
+    "comment": "-421, 57, -206"
+  },
+  {
+    "title": "seabreak_cove-chest-201",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2718,
+    "y": 2427,
+    "image": "",
+    "comment": "-424, 57, -210"
+  },
+  {
+    "title": "seabreak_cove-chest-202",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2550,
+    "y": 2837,
+    "image": "",
+    "comment": "-528, 119, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-203",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2511,
+    "y": 2837,
+    "image": "",
+    "comment": "-552, 124, 44"
+  },
+  {
+    "title": "seabreak_cove-chest-204",
+    "category": "chest",
+    "tags": [
+      "seabreak_cove"
+    ],
+    "x": 2443,
+    "y": 2538,
+    "image": "",
+    "comment": "-594, 117, -141"
+  }
+]

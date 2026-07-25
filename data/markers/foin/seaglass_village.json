@@ -1,0 +1,816 @@
+[
+  {
+    "title": "seaglass_village-chest-001",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2342,
+    "y": 2084,
+    "image": "",
+    "comment": "-656, 102, -422"
+  },
+  {
+    "title": "seaglass_village-chest-002",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2347,
+    "y": 2063,
+    "image": "",
+    "comment": "-653, 138, -435"
+  },
+  {
+    "title": "seaglass_village-chest-003",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2334,
+    "y": 2092,
+    "image": "",
+    "comment": "-661, 124, -417"
+  },
+  {
+    "title": "seaglass_village-chest-004",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2400,
+    "y": 2082,
+    "image": "",
+    "comment": "-620, 69, -423"
+  },
+  {
+    "title": "seaglass_village-chest-005",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2436,
+    "y": 2045,
+    "image": "",
+    "comment": "-598, 71, -446"
+  },
+  {
+    "title": "seaglass_village-chest-006",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2491,
+    "y": 2008,
+    "image": "",
+    "comment": "-564, 59, -469"
+  },
+  {
+    "title": "seaglass_village-chest-007",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2484,
+    "y": 1988,
+    "image": "",
+    "comment": "-568, 59, -481"
+  },
+  {
+    "title": "seaglass_village-chest-008",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2531,
+    "y": 1982,
+    "image": "",
+    "comment": "-539, 79, -485"
+  },
+  {
+    "title": "seaglass_village-chest-009",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2531,
+    "y": 1985,
+    "image": "",
+    "comment": "-539, 79, -483"
+  },
+  {
+    "title": "seaglass_village-chest-010",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2505,
+    "y": 2009,
+    "image": "",
+    "comment": "-555, 70, -468"
+  },
+  {
+    "title": "seaglass_village-chest-011",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2512,
+    "y": 2014,
+    "image": "",
+    "comment": "-551, 86, -465"
+  },
+  {
+    "title": "seaglass_village-chest-012",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2512,
+    "y": 2008,
+    "image": "",
+    "comment": "-551, 84, -469"
+  },
+  {
+    "title": "seaglass_village-chest-013",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2603,
+    "y": 2047,
+    "image": "",
+    "comment": "-495, 79, -445"
+  },
+  {
+    "title": "seaglass_village-chest-014",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2632,
+    "y": 1997,
+    "image": "",
+    "comment": "-477, 62, -476"
+  },
+  {
+    "title": "seaglass_village-chest-015",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2540,
+    "y": 2150,
+    "image": "",
+    "comment": "-534, 76, -381"
+  },
+  {
+    "title": "seaglass_village-chest-016",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2616,
+    "y": 2360,
+    "image": "",
+    "comment": "-487, 78, -251"
+  },
+  {
+    "title": "seaglass_village-chest-017",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2629,
+    "y": 2359,
+    "image": "",
+    "comment": "-479, 78, -252"
+  },
+  {
+    "title": "seaglass_village-chest-018",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2588,
+    "y": 2313,
+    "image": "",
+    "comment": "-504, 80, -280"
+  },
+  {
+    "title": "seaglass_village-chest-019",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2614,
+    "y": 2320,
+    "image": "",
+    "comment": "-488, 80, -276"
+  },
+  {
+    "title": "seaglass_village-chest-020",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2567,
+    "y": 2281,
+    "image": "",
+    "comment": "-517, 75, -300"
+  },
+  {
+    "title": "seaglass_village-chest-021",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2504,
+    "y": 2299,
+    "image": "",
+    "comment": "-556, 70, -289"
+  },
+  {
+    "title": "seaglass_village-chest-022",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2498,
+    "y": 2297,
+    "image": "",
+    "comment": "-560, 70, -290"
+  },
+  {
+    "title": "seaglass_village-chest-023",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2491,
+    "y": 2299,
+    "image": "",
+    "comment": "-564, 70, -289"
+  },
+  {
+    "title": "seaglass_village-chest-024",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2486,
+    "y": 2367,
+    "image": "",
+    "comment": "-567, 64, -247"
+  },
+  {
+    "title": "seaglass_village-chest-025",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2459,
+    "y": 2352,
+    "image": "",
+    "comment": "-584, 64, -256"
+  },
+  {
+    "title": "seaglass_village-chest-026",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2455,
+    "y": 2362,
+    "image": "",
+    "comment": "-586, 64, -250"
+  },
+  {
+    "title": "seaglass_village-chest-027",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2464,
+    "y": 2379,
+    "image": "",
+    "comment": "-581, 57, -239"
+  },
+  {
+    "title": "seaglass_village-chest-028",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2635,
+    "y": 2123,
+    "image": "",
+    "comment": "-475, 72, -398"
+  },
+  {
+    "title": "seaglass_village-chest-029",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2612,
+    "y": 2095,
+    "image": "",
+    "comment": "-489, 121, -415"
+  },
+  {
+    "title": "seaglass_village-chest-030",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2621,
+    "y": 2103,
+    "image": "",
+    "comment": "-484, 121, -410"
+  },
+  {
+    "title": "seaglass_village-chest-031",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2612,
+    "y": 2111,
+    "image": "",
+    "comment": "-489, 121, -405"
+  },
+  {
+    "title": "seaglass_village-chest-032",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2604,
+    "y": 2103,
+    "image": "",
+    "comment": "-494, 121, -410"
+  },
+  {
+    "title": "seaglass_village-chest-033",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2585,
+    "y": 2090,
+    "image": "",
+    "comment": "-506, 69, -418"
+  },
+  {
+    "title": "seaglass_village-chest-034",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2502,
+    "y": 2137,
+    "image": "",
+    "comment": "-557, 69, -389"
+  },
+  {
+    "title": "seaglass_village-chest-035",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2492,
+    "y": 2126,
+    "image": "",
+    "comment": "-563, 69, -396"
+  },
+  {
+    "title": "seaglass_village-chest-036",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2492,
+    "y": 2116,
+    "image": "",
+    "comment": "-563, 69, -402"
+  },
+  {
+    "title": "seaglass_village-chest-037",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2449,
+    "y": 2158,
+    "image": "",
+    "comment": "-590, 77, -376"
+  },
+  {
+    "title": "seaglass_village-chest-038",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2449,
+    "y": 2152,
+    "image": "",
+    "comment": "-590, 77, -380"
+  },
+  {
+    "title": "seaglass_village-chest-039",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2429,
+    "y": 2116,
+    "image": "",
+    "comment": "-602, 68, -402"
+  },
+  {
+    "title": "seaglass_village-chest-040",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2413,
+    "y": 2139,
+    "image": "",
+    "comment": "-612, 69, -388"
+  },
+  {
+    "title": "seaglass_village-chest-041",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2411,
+    "y": 2150,
+    "image": "",
+    "comment": "-613, 68, -381"
+  },
+  {
+    "title": "seaglass_village-chest-042",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2402,
+    "y": 2169,
+    "image": "",
+    "comment": "-619, 69, -369"
+  },
+  {
+    "title": "seaglass_village-chest-043",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2426,
+    "y": 2173,
+    "image": "",
+    "comment": "-604, 68, -367"
+  },
+  {
+    "title": "seaglass_village-chest-044",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2361,
+    "y": 2185,
+    "image": "",
+    "comment": "-644, 68, -359"
+  },
+  {
+    "title": "seaglass_village-chest-045",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2347,
+    "y": 2239,
+    "image": "",
+    "comment": "-653, 90, -326"
+  },
+  {
+    "title": "seaglass_village-chest-046",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2369,
+    "y": 2236,
+    "image": "",
+    "comment": "-639, 90, -328"
+  },
+  {
+    "title": "seaglass_village-chest-047",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2369,
+    "y": 2229,
+    "image": "",
+    "comment": "-639, 90, -332"
+  },
+  {
+    "title": "seaglass_village-chest-048",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2355,
+    "y": 2258,
+    "image": "",
+    "comment": "-648, 87, -314"
+  },
+  {
+    "title": "seaglass_village-chest-049",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2373,
+    "y": 2239,
+    "image": "",
+    "comment": "-637, 101, -326"
+  },
+  {
+    "title": "seaglass_village-chest-050",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2625,
+    "y": 2094,
+    "image": "",
+    "comment": "-481, 59, -416"
+  },
+  {
+    "title": "seaglass_village-chest-051",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2382,
+    "y": 2333,
+    "image": "",
+    "comment": "-631, 81, -268"
+  },
+  {
+    "title": "seaglass_village-chest-052",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2399,
+    "y": 2344,
+    "image": "",
+    "comment": "-621, 157, -261"
+  },
+  {
+    "title": "seaglass_village-chest-053",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2441,
+    "y": 2341,
+    "image": "",
+    "comment": "-595, 163, -263"
+  },
+  {
+    "title": "seaglass_village-chest-054",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2394,
+    "y": 2331,
+    "image": "",
+    "comment": "-624, 149, -269"
+  },
+  {
+    "title": "seaglass_village-chest-055",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2382,
+    "y": 2347,
+    "image": "",
+    "comment": "-631, 138, -259"
+  },
+  {
+    "title": "seaglass_village-chest-056",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2387,
+    "y": 2357,
+    "image": "",
+    "comment": "-628, 130, -253"
+  },
+  {
+    "title": "seaglass_village-chest-057",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2382,
+    "y": 2324,
+    "image": "",
+    "comment": "-631, 96, -273"
+  },
+  {
+    "title": "seaglass_village-chest-058",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2402,
+    "y": 2282,
+    "image": "",
+    "comment": "-619, 76, -299"
+  },
+  {
+    "title": "seaglass_village-chest-059",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2681,
+    "y": 2086,
+    "image": "",
+    "comment": "-447, 53, -421"
+  },
+  {
+    "title": "seaglass_village-chest-060",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2702,
+    "y": 2063,
+    "image": "",
+    "comment": "-434, 56, -435"
+  },
+  {
+    "title": "seaglass_village-chest-061",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2697,
+    "y": 2084,
+    "image": "",
+    "comment": "-437, 57, -422"
+  },
+  {
+    "title": "seaglass_village-chest-062",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2702,
+    "y": 2060,
+    "image": "",
+    "comment": "-434, 56, -437"
+  },
+  {
+    "title": "seaglass_village-chest-063",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2703,
+    "y": 2068,
+    "image": "",
+    "comment": "-433, 52, -432"
+  },
+  {
+    "title": "seaglass_village-chest-064",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2481,
+    "y": 2216,
+    "image": "",
+    "comment": "-570, 79, -340"
+  },
+  {
+    "title": "seaglass_village-chest-065",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2693,
+    "y": 2068,
+    "image": "",
+    "comment": "-439, 52, -432"
+  },
+  {
+    "title": "seaglass_village-chest-066",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2533,
+    "y": 2205,
+    "image": "",
+    "comment": "-538, 71, -347"
+  },
+  {
+    "title": "seaglass_village-chest-067",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2531,
+    "y": 2205,
+    "image": "",
+    "comment": "-539, 78, -347"
+  },
+  {
+    "title": "seaglass_village-chest-068",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2480,
+    "y": 2221,
+    "image": "",
+    "comment": "-571, 70, -337"
+  },
+  {
+    "title": "seaglass_village-chest-069",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2499,
+    "y": 2216,
+    "image": "",
+    "comment": "-559, 75, -340"
+  },
+  {
+    "title": "seaglass_village-chest-070",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2335,
+    "y": 2129,
+    "image": "",
+    "comment": "-660, 97, -394"
+  },
+  {
+    "title": "seaglass_village-chest-071",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2480,
+    "y": 2113,
+    "image": "",
+    "comment": "-571, 69, -404"
+  },
+  {
+    "title": "seaglass_village-chest-072",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2415,
+    "y": 2274,
+    "image": "",
+    "comment": "-611, 70, -304"
+  },
+  {
+    "title": "seaglass_village-chest-073",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2410,
+    "y": 2203,
+    "image": "",
+    "comment": "-614, 70, -348"
+  },
+  {
+    "title": "seaglass_village-chest-074",
+    "category": "chest",
+    "tags": [
+      "seaglass_village"
+    ],
+    "x": 2647,
+    "y": 2334,
+    "image": "",
+    "comment": "-468, 85, -267"
+  }
+]
