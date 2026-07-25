@@ -1,8 +1,5 @@
-/* global L, MAP_CONFIG */
+/* global L */
 (() => {
-  const CFG = window.MAP_CONFIG;
-  const API = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}`;
-
   // ── status toast ─────────────────────────────────────────────────────
   const toastEl = document.getElementById("status-toast");
   let toastTimer;
@@ -85,14 +82,11 @@
     });
   }
 
-  // ── owner mode: optional GitHub token for direct publish + photo upload ─
-  const TOKEN_KEY = "map-explorer:owner-token";
-  const getToken = () => localStorage.getItem(TOKEN_KEY) || "";
-  const isOwner = () => !!getToken();
-  const ghHeaders = () => ({
-    Authorization: `token ${getToken()}`,
-    Accept: "application/vnd.github+json",
-  });
+  // ── owner mode: an admin key that unlocks instant publish + the review queue ─
+  const ADMIN_KEY = "map-explorer:admin-key";
+  const getAdminKey = () => localStorage.getItem(ADMIN_KEY) || "";
+  const isOwner = () => !!getAdminKey();
+  const adminHeaders = () => ({ "X-Admin-Key": getAdminKey() });
 
   // ── coordinate helpers ───────────────────────────────────────────────
   // Tiles/markers are authored in "map pixel" space with y increasing
@@ -145,15 +139,20 @@
   // ── marker card popup ────────────────────────────────────────────────
   function popupHtml(m, pending, id) {
     const img = m.image
-      ? `<img src="${m.image}" alt="" onerror="this.style.display='none'">`
+      ? `<img src="${escapeHtml(m.image)}" alt="" onerror="this.style.display='none'">`
       : "";
-    const prTag = pending
-      ? `<span class="pr-tag">PR #${pending.number} by @${pending.user}</span><br>
-         <a class="pr-link" href="${pending.url}" target="_blank" rel="noopener">Review on GitHub →</a>`
+    const pendingTag = pending
+      ? `<span class="pr-tag">Pending review</span>`
       : "";
     const done = isDone(id);
     const tagChips = (m.tags || []).length
       ? `<div class="tag-chips">${m.tags.map((t) => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("")}</div>`
+      : "";
+    const ownerActions = pending && isOwner()
+      ? `<div class="owner-review-actions">
+           <button class="btn primary approve-btn" data-wp-id="${escapeHtml(id)}">Approve</button>
+           <button class="btn danger reject-btn" data-wp-id="${escapeHtml(id)}">Reject</button>
+         </div>`
       : "";
     return `<div class="marker-card ${done ? "done" : ""}">
       ${img}
@@ -162,7 +161,8 @@
         <h3>${escapeHtml(m.title || "Untitled")}</h3>
         <p>${escapeHtml(m.comment || "")}</p>
         ${tagChips}
-        ${prTag}
+        ${pendingTag}
+        ${ownerActions}
         <button class="complete-toggle ${done ? "is-done" : ""}" data-wp-id="${escapeHtml(id)}">
           ${done ? "✓ Completed — click to undo" : "Mark completed"}
         </button>
@@ -173,71 +173,49 @@
     return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
-  // ── verified markers: read straight from the repo ───────────────────
+  // ── verified markers: one fast call to our own API ───────────────────
   async function loadVerifiedMarkers() {
     try {
-      const res = await fetch(`${API}/contents/data/markers?ref=${CFG.branch}`);
-      if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-      const files = await res.json();
-      const jsonFiles = files.filter((f) => f.type === "file" && f.name.endsWith(".json"));
-      await Promise.all(
-        jsonFiles.map(async (f) => {
-          try {
-            const m = await (await fetch(f.download_url)).json();
-            const id = f.path; // stable across sessions
-            const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "verified") })
-              .bindPopup(popupHtml(m, null, id))
-              .addTo(verifiedLayer);
-            registry.set(id, { marker, data: m, pending: null });
-          } catch (e) {
-            console.warn("Skipping malformed marker file", f.path, e);
-          }
-        })
-      );
+      const res = await fetch("/api/markers", { cache: "no-store" });
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const markers = await res.json();
+      verifiedLayer.clearLayers();
+      markers.forEach((m) => {
+        const id = m.id;
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "verified") })
+          .bindPopup(popupHtml(m, null, id))
+          .addTo(verifiedLayer);
+        registry.set(id, { marker, data: m, pending: null });
+      });
       updateProgressCount();
       renderTagChips();
     } catch (e) {
       console.warn("Could not load verified markers", e);
-      toast("Couldn't reach GitHub for verified markers (rate limit or repo not public yet?)");
+      toast("Couldn't load markers — try refreshing.");
     }
   }
 
-  // ── pending markers: files added in still-open pull requests ────────
+  // ── pending markers: awaiting owner review ───────────────────────────
   let pendingLoaded = false;
   async function loadPendingMarkers() {
-    if (pendingLoaded) return;
-    pendingLoaded = true;
     try {
-      const prs = await (await fetch(`${API}/pulls?state=open&per_page=50`)).json();
-      if (!Array.isArray(prs)) throw new Error("Unexpected PR list response");
-      for (const pr of prs) {
-        try {
-          const files = await (await fetch(`${API}/pulls/${pr.number}/files`)).json();
-          const added = files.filter(
-            (f) => f.status === "added" && f.filename.startsWith("data/markers/") && f.filename.endsWith(".json")
-          );
-          for (const f of added) {
-            try {
-              const m = await (await fetch(f.raw_url)).json();
-              const id = f.filename;
-              const prInfo = { number: pr.number, user: pr.user.login, url: pr.html_url };
-              const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "pending") })
-                .bindPopup(popupHtml(m, prInfo, id))
-                .addTo(pendingLayer);
-              registry.set(id, { marker, data: m, pending: prInfo });
-            } catch (e) {
-              console.warn("Skipping malformed pending marker", f.filename, e);
-            }
-          }
-        } catch (e) {
-          console.warn("Could not read files for PR", pr.number, e);
-        }
-      }
+      const res = await fetch("/api/markers/pending", { cache: "no-store" });
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const markers = await res.json();
+      pendingLayer.clearLayers();
+      markers.forEach((m) => {
+        const id = m.id;
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "pending") })
+          .bindPopup(popupHtml(m, {}, id))
+          .addTo(pendingLayer);
+        registry.set(id, { marker, data: m, pending: {} });
+      });
+      pendingLoaded = true;
       updateProgressCount();
       renderTagChips();
     } catch (e) {
       console.warn("Could not load pending markers", e);
-      toast("Couldn't reach GitHub for pending PRs (rate limit?)");
+      toast("Couldn't load pending submissions.");
     }
   }
 
@@ -248,7 +226,7 @@
     document.querySelectorAll("#view-toggle button").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     if (btn.dataset.view === "all") {
-      toast("Loading pending pull requests…", 2000);
+      toast("Loading pending submissions…", 2000);
       await loadPendingMarkers();
       pendingLayer.addTo(map);
     } else {
@@ -256,13 +234,40 @@
     }
   });
 
+  // approve/reject buttons inside popups (owner only)
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    if (!container) return;
+    const approveBtn = container.querySelector(".approve-btn");
+    const rejectBtn = container.querySelector(".reject-btn");
+    if (approveBtn) approveBtn.addEventListener("click", () => handleReview(approveBtn.dataset.wpId, "approve"));
+    if (rejectBtn) rejectBtn.addEventListener("click", () => handleReview(rejectBtn.dataset.wpId, "reject"));
+  });
+
+  async function handleReview(id, action) {
+    try {
+      const res = await fetch(`/api/admin/${action}`, {
+        method: "POST",
+        headers: { ...adminHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `API ${res.status}`);
+      toast(action === "approve" ? "Marker approved and published!" : "Marker rejected.");
+      map.closePopup();
+      registry.delete(id);
+      await Promise.all([loadVerifiedMarkers(), loadPendingMarkers()]);
+    } catch (e) {
+      toast(`Couldn't ${action}: ${e.message}`);
+    }
+  }
+
   // ── owner mode modal ──────────────────────────────────────────────────
   const ownerModal = document.getElementById("owner-modal");
   const ownerStatus = document.getElementById("owner-status");
   function refreshOwnerStatus() {
     ownerStatus.textContent = isOwner()
-      ? "Connected — you'll publish directly to main."
-      : "Not connected — you'll go through the pull request flow like everyone else.";
+      ? "Connected — you can publish instantly and approve/reject submissions."
+      : "Not connected — your markers go into the pending queue for the owner to approve.";
     ownerStatus.style.color = isOwner() ? "var(--verified)" : "var(--parchment-dim)";
     addBtnLabel();
   }
@@ -271,21 +276,31 @@
     refreshOwnerStatus();
     ownerModal.classList.add("show");
   };
-  document.getElementById("owner-connect-btn").onclick = () => {
+  document.getElementById("owner-connect-btn").onclick = async () => {
     const val = document.getElementById("owner-token-input").value.trim();
     if (!val) return;
-    localStorage.setItem(TOKEN_KEY, val);
+    localStorage.setItem(ADMIN_KEY, val);
+    const res = await fetch("/api/admin/verify", { method: "POST", headers: adminHeaders() }).catch(() => null);
+    const ok = res && res.ok && (await res.json()).ok;
+    if (!ok) {
+      localStorage.removeItem(ADMIN_KEY);
+      toast("That admin key wasn't accepted.");
+      refreshOwnerStatus();
+      return;
+    }
     refreshOwnerStatus();
-    toast("Connected. You can now attach photos and publish directly.");
+    toast("Connected. Reloading markers so review controls show up…");
+    await Promise.all([loadVerifiedMarkers(), loadPendingMarkers()]);
     ownerModal.classList.remove("show");
   };
-  document.getElementById("owner-disconnect-btn").onclick = () => {
-    localStorage.removeItem(TOKEN_KEY);
+  document.getElementById("owner-disconnect-btn").onclick = async () => {
+    localStorage.removeItem(ADMIN_KEY);
     refreshOwnerStatus();
     toast("Disconnected.");
+    await Promise.all([loadVerifiedMarkers(), loadPendingMarkers()]);
   };
 
-  // ── image resize (keeps repo commits small) ──────────────────────────
+  // ── image resize (keeps uploads small and fast) ───────────────────────
   function resizeImage(file, maxDim = 1600, quality = 0.82) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -304,28 +319,6 @@
       img.onerror = reject;
       img.src = URL.createObjectURL(file);
     });
-  }
-  function blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-      const r = new FileReader();
-      r.onload = () => resolve(r.result.split(",")[1]);
-      r.onerror = reject;
-      r.readAsDataURL(blob);
-    });
-  }
-
-  // ── direct publish via GitHub Contents API (owner only) ──────────────
-  async function putFile(path, base64Content, message) {
-    const res = await fetch(`${API}/contents/${path}`, {
-      method: "PUT",
-      headers: { ...ghHeaders(), "Content-Type": "application/json" },
-      body: JSON.stringify({ message, content: base64Content, branch: CFG.branch }),
-    });
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.message || `GitHub API ${res.status}`);
-    }
-    return res.json();
   }
 
   // ── legend modal ─────────────────────────────────────────────────────
@@ -398,8 +391,10 @@
     pendingCoord = { x: Math.round(e.latlng.lng), y: Math.round(-e.latlng.lat) };
     coordReadout.textContent = `x: ${pendingCoord.x}, y: ${pendingCoord.y}`;
     setPlacing(false);
-    document.getElementById("marker-modal-submit").textContent = isOwner() ? "Publish" : "Generate GitHub link";
-    document.querySelector("#marker-modal .eyebrow").textContent = isOwner() ? "New marker · publishing directly" : "New marker · via pull request";
+    document.getElementById("marker-modal-submit").textContent = isOwner() ? "Publish" : "Submit";
+    document.querySelector("#marker-modal .eyebrow").textContent = isOwner()
+      ? "New marker · publishing directly"
+      : "New marker · goes to pending review";
     markerModal.classList.add("show");
   });
 
@@ -426,8 +421,7 @@
     const title = document.getElementById("f-title").value.trim();
     const category = document.getElementById("f-category").value;
     const imageUrl = document.getElementById("f-image").value.trim();
-    const tags = document.getElementById("f-tags").value
-      .split(",").map((t) => t.trim().toLowerCase()).filter(Boolean);
+    const tags = document.getElementById("f-tags").value.trim();
     const comment = document.getElementById("f-comment").value.trim();
     const hint = document.getElementById("form-hint");
     const submitBtn = document.getElementById("marker-modal-submit");
@@ -440,67 +434,51 @@
     }
     if (!pendingCoord) return;
 
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 40)
-      || "marker";
-    const unique = `${slug}-${Date.now().toString(36).slice(-4)}`;
-    const jsonPath = `data/markers/${unique}.json`;
+    submitBtn.disabled = true;
+    submitBtn.textContent = isOwner() ? "Publishing…" : "Submitting…";
 
-    if (isOwner()) {
-      // ── direct publish: upload photo (if any) + commit marker straight to main ──
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Publishing…";
-      try {
-        let imagePath = imageUrl;
-        if (photoFile) {
-          toast("Resizing and uploading photo…", 4000);
-          const resized = await resizeImage(photoFile);
-          const base64 = await blobToBase64(resized);
-          imagePath = `images/markers/${unique}.jpg`;
-          await putFile(imagePath, base64, `Add photo for marker: ${title}`);
-        }
-        const payload = { title, category, tags, x: pendingCoord.x, y: pendingCoord.y, image: imagePath || "", comment };
-        const jsonBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2) + "\n")));
-        await putFile(jsonPath, jsonBase64, `Add marker: ${title}`);
-
-        markerModal.classList.remove("show");
-        toast("Published! Reloading verified markers…", 4000);
-        verifiedLayer.clearLayers();
-        await loadVerifiedMarkers();
-        updateProgressCount();
-        renderTagChips();
-        resetMarkerForm(hint);
-      } catch (e) {
-        console.error(e);
-        hint.textContent = `Couldn't publish: ${e.message}. Check your token's permissions.`;
-        hint.style.color = "var(--danger)";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Publish";
+    try {
+      const form = new FormData();
+      form.append("title", title);
+      form.append("category", category);
+      form.append("tags", tags);
+      form.append("comment", comment);
+      form.append("x", pendingCoord.x);
+      form.append("y", pendingCoord.y);
+      if (imageUrl) form.append("imageUrl", imageUrl);
+      if (photoFile) {
+        toast("Resizing photo…", 2000);
+        const resized = await resizeImage(photoFile);
+        form.append("image", resized, "photo.jpg");
       }
-      return;
-    }
 
-    // ── no token: fall back to the GitHub Issue flow (URL only, no upload) ──
-    const payload = { title, category, tags, x: pendingCoord.x, y: pendingCoord.y, image: imageUrl || "", comment };
-    const content = JSON.stringify(payload, null, 2);
-    
-    const issueTitle = `New Marker Proposal: ${title}`;
-    const issueBody = `Please add the following marker:\n\n\`\`\`json\n${content}\n\`\`\``;
-    
-    const url = 
-      `https://github.com/${CFG.owner}/${CFG.repo}/issues/new` +
-      `?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: adminHeaders(),
+        body: form,
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || `API ${res.status}`);
 
-    if (photoFile && !imageUrl) {
-      hint.textContent = "Photo uploads need an owner-mode connection — paste an image URL instead, or include a link in the issue.";
+      markerModal.classList.remove("show");
+      toast(
+        result.status === "verified"
+          ? "Published! Reloading the map…"
+          : "Submitted! It'll show up under \"Verified + Pending\" until an admin approves it.",
+        5000
+      );
+      await Promise.all([loadVerifiedMarkers(), loadPendingMarkers()]);
+      updateProgressCount();
+      renderTagChips();
+      resetMarkerForm(hint);
+    } catch (e) {
+      console.error(e);
+      hint.textContent = `Couldn't submit: ${e.message}`;
       hint.style.color = "var(--danger)";
-      return;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = isOwner() ? "Publish" : "Submit";
     }
-
-    window.open(url, "_blank", "noopener");
-    markerModal.classList.remove("show");
-    toast("Opened GitHub — click \"Submit new issue\" to propose your marker.", 6000);
-    resetMarkerForm(hint);
   };
 
   // ── boot ─────────────────────────────────────────────────────────────
