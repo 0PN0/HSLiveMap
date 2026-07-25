@@ -180,6 +180,11 @@ async function handleAdminEdit(request, env) {
   if ("x_ig" in body) marker.x_ig = numOrNull(body.x_ig);
   if ("y_ig" in body) marker.y_ig = numOrNull(body.y_ig);
   if ("z_ig" in body) marker.z_ig = numOrNull(body.z_ig);
+  // Optional: the client recomputes the map-pixel position from the new
+  // in-game X/Z (inverse of the calibration fit) and sends it along so the
+  // pin actually moves, not just its label.
+  if (body.x !== undefined && body.x !== null && Number.isFinite(Number(body.x))) marker.x = Number(body.x);
+  if (body.y !== undefined && body.y !== null && Number.isFinite(Number(body.y))) marker.y = Number(body.y);
 
   await env.MARKERS_KV.put(key, JSON.stringify(marker));
   return json({ ok: true, marker });
