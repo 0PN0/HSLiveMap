@@ -15,6 +15,7 @@ Create a marker if discover a chest in game \
     -Tag for region found in \
     -Description: Coords, how to find, anything else \
  \
-  It then must be reviewed, and merged by repo admin to main. \
+  When creating waypoint will be redirected to github, click create when prompted to (for issue). \
+  Once I see it I will look it over and add it to the map! \
  \
 Feel free to open an issue for feature requests / bugs.
