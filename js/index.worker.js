@@ -166,16 +166,43 @@ async function handleAdminAction(request, env, action) {
   return json({ error: "Unknown action." }, { status: 400 });
 }
 
+async function findMarkerKeyAndData(env, id) {
+  const directKey = `marker:${id}`;
+  const raw = await env.MARKERS_KV.get(directKey);
+  if (raw) return { key: directKey, marker: JSON.parse(raw) };
+
+  // Fallback for older/migrated entries whose KV key might not exactly
+  // match their `id` field: scan and match on the id inside the stored
+  // JSON instead of assuming key === id.
+  let cursor;
+  do {
+    const page = await env.MARKERS_KV.list({ prefix: "marker:", cursor });
+    cursor = page.cursor;
+    for (const k of page.keys) {
+      const r = await env.MARKERS_KV.get(k.name);
+      if (!r) continue;
+      let m;
+      try { m = JSON.parse(r); } catch { continue; }
+      if (m.id === id || k.name === `marker:${id}` || k.name.slice(7) === id) {
+        return { key: k.name, marker: m };
+      }
+    }
+    if (page.list_complete) break;
+  } while (cursor);
+
+  return null;
+}
+
 async function handleAdminEdit(request, env) {
   if (!isAdmin(request, env)) return json({ error: "Bad admin key." }, { status: 401 });
   const body = await request.json().catch(() => ({}));
   const id = (body.id || "").toString();
   if (!id) return json({ error: "Missing id." }, { status: 400 });
 
-  const key = `marker:${id}`;
-  const raw = await env.MARKERS_KV.get(key);
-  if (!raw) return json({ error: "Marker not found." }, { status: 404 });
-  const marker = JSON.parse(raw);
+  const found = await findMarkerKeyAndData(env, id);
+  if (!found) return json({ error: `Marker not found (id: "${id}").` }, { status: 404 });
+  const { key, marker } = found;
+  if (!marker.id) marker.id = id; // backfill so future lookups hit the fast path
 
   if ("x_ig" in body) marker.x_ig = numOrNull(body.x_ig);
   if ("y_ig" in body) marker.y_ig = numOrNull(body.y_ig);
