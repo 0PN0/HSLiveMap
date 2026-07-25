@@ -7,6 +7,7 @@
   --brass-dim:  #8c6530;
   --verified:   #6f9a72;
   --pending:    #7c85c9;
+  --adopt:      #caa14b;
   --danger:     #b5533f;
   --line:       rgba(236, 228, 211, 0.12);
   --shadow:     0 8px 28px rgba(0,0,0,0.45);
@@ -226,6 +227,18 @@ body {
 }
 .pin.verified { background: var(--verified); }
 .pin.pending  { background: var(--pending); }
+.pin.adopt    { background: var(--adopt); }
+.pin.adopt::after {
+  content: "★";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+  color: var(--ink);
+  font-size: 11px;
+}
 .pin.done { background: #4a5245; opacity: 0.55; }
 .pin.done::after {
   content: "✓";

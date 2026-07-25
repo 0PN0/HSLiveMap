@@ -139,6 +139,8 @@
 
   const verifiedLayer = L.layerGroup().addTo(map);
   const pendingLayer = L.layerGroup(); // added/removed by the view toggle
+  const adoptLayer = L.layerGroup(); // added/removed by the view toggle
+  const adoptMarkerData = new Map(); // id -> raw marker data, for opening the adopt modal
 
   function pinIcon(kind) {
     return L.divIcon({
@@ -220,6 +222,22 @@
     return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
+  // ── Adopt-a-Marker popup: donated waypoint, no photo/comment yet ─────
+  function adoptPopupHtml(m, id) {
+    const tagChips = (m.tags || []).length
+      ? `<div class="tag-chips">${m.tags.map((t) => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("")}</div>`
+      : "";
+    return `<div class="marker-card">
+      <div class="body">
+        <div class="cat">${escapeHtml(m.category || "marker")}</div>
+        <h3>${escapeHtml(m.title || "Untitled")}</h3>
+        <p class="ig-coords">In-game: ${m.x_ig ?? "?"}, ${m.y_ig ?? "?"}, ${m.z_ig ?? "?"}</p>
+        ${tagChips}
+        <button class="btn primary adopt-btn" data-wp-id="${escapeHtml(id)}" style="width:100%;margin-top:10px;">Adopt this marker</button>
+      </div>
+    </div>`;
+  }
+
   // ── verified markers: one fast call to our own API ───────────────────
   async function loadVerifiedMarkers() {
     try {
@@ -266,20 +284,143 @@
     }
   }
 
+  // ── Adopt a Marker: donated waypoints waiting to be claimed ──────────
+  let adoptLoaded = false;
+  async function loadAdoptedMarkers() {
+    try {
+      const res = await fetch("/api/markers/adopted", { cache: "no-store" });
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const markers = await res.json();
+      adoptLayer.clearLayers();
+      adoptMarkerData.clear();
+      markers.forEach((m) => {
+        const id = m.id;
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon("adopt") })
+          .bindPopup(adoptPopupHtml(m, id))
+          .addTo(adoptLayer);
+        adoptMarkerData.set(id, m);
+      });
+      adoptLoaded = true;
+    } catch (e) {
+      console.warn("Could not load the adopt-a-marker pool", e);
+      toast("Couldn't load donated waypoints.");
+    }
+  }
+
   // ── view toggle ──────────────────────────────────────────────────────
+  // "Verified" and "Verified + Pending" always keep the verified layer on;
+  // "Adopt a Marker" is its own exclusive view of the donated-waypoint pool.
   document.getElementById("view-toggle").addEventListener("click", async (e) => {
     const btn = e.target.closest("button[data-view]");
     if (!btn) return;
     document.querySelectorAll("#view-toggle button").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
+
+    map.removeLayer(pendingLayer);
+    map.removeLayer(adoptLayer);
+
     if (btn.dataset.view === "all") {
       toast("Loading pending submissions…", 2000);
       await loadPendingMarkers();
       pendingLayer.addTo(map);
-    } else {
-      map.removeLayer(pendingLayer);
+    } else if (btn.dataset.view === "adopt") {
+      toast("Loading donated waypoints…", 2000);
+      await loadAdoptedMarkers();
+      adoptLayer.addTo(map);
     }
   });
+
+  // click "Adopt this marker" inside a pin's popup -> open the adopt modal
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    const btn = container && container.querySelector(".adopt-btn");
+    if (!btn) return;
+    btn.addEventListener("click", () => openAdoptModal(btn.dataset.wpId));
+  });
+
+  const adoptModal = document.getElementById("adopt-modal");
+  let currentAdoptId = null;
+
+  function openAdoptModal(id) {
+    const m = adoptMarkerData.get(id);
+    if (!m) return;
+    currentAdoptId = id;
+    document.getElementById("adopt-title").value = m.title || "";
+    document.getElementById("adopt-comment").value = "";
+    document.getElementById("adopt-image").value = "";
+    document.getElementById("adopt-photo").value = "";
+    document.getElementById("adopt-photo-hint").textContent = "";
+    document.getElementById("adopt-hint").textContent = "";
+    document.getElementById("adopt-coord-readout").textContent =
+      `In-game: ${m.x_ig ?? "?"}, ${m.y_ig ?? "?"}, ${m.z_ig ?? "?"}`;
+    map.closePopup();
+    adoptModal.classList.add("show");
+  }
+
+  document.getElementById("adopt-modal-cancel").onclick = () => adoptModal.classList.remove("show");
+
+  const adoptPhotoInput = document.getElementById("adopt-photo");
+  adoptPhotoInput.addEventListener("change", () => {
+    const f = adoptPhotoInput.files[0];
+    document.getElementById("adopt-photo-hint").textContent = f
+      ? `Selected: ${f.name} (${Math.round(f.size / 1024)} KB — will be resized before upload)`
+      : "";
+  });
+
+  document.getElementById("adopt-modal-submit").onclick = async () => {
+    if (!currentAdoptId) return;
+    const title = document.getElementById("adopt-title").value.trim();
+    const comment = document.getElementById("adopt-comment").value.trim();
+    const imageUrl = document.getElementById("adopt-image").value.trim();
+    const photoFile = adoptPhotoInput.files[0] || null;
+    const hint = document.getElementById("adopt-hint");
+    const submitBtn = document.getElementById("adopt-modal-submit");
+
+    if (!title) {
+      hint.textContent = "Give it a name first.";
+      hint.style.color = "var(--danger)";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting…";
+    try {
+      const form = new FormData();
+      form.append("id", currentAdoptId);
+      form.append("title", title);
+      form.append("comment", comment);
+      if (imageUrl) form.append("imageUrl", imageUrl);
+      if (photoFile) {
+        toast("Resizing photo…", 2000);
+        const resized = await resizeImage(photoFile);
+        form.append("image", resized, "photo.jpg");
+      }
+
+      const res = await fetch("/api/adopt", {
+        method: "POST",
+        headers: adminHeaders(),
+        body: form,
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || `API ${res.status}`);
+
+      adoptModal.classList.remove("show");
+      toast(
+        result.status === "verified"
+          ? "Published! Reloading the map…"
+          : "Submitted for review! It's off the Adopt a Marker list and will show under \"Verified + Pending\" until an admin approves it.",
+        6000
+      );
+      await Promise.all([loadAdoptedMarkers(), loadPendingMarkers(), loadVerifiedMarkers()]);
+    } catch (err) {
+      console.error(err);
+      hint.textContent = `Couldn't submit: ${err.message}`;
+      hint.style.color = "var(--danger)";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit for review";
+    }
+  };
 
   // approve/reject buttons inside popups (owner only)
   map.on("popupopen", (e) => {
@@ -350,7 +491,7 @@
       toast(action === "approve" ? "Marker approved and published!" : "Marker rejected.");
       map.closePopup();
       registry.delete(id);
-      await Promise.all([loadVerifiedMarkers(), loadPendingMarkers()]);
+      await Promise.all([loadVerifiedMarkers(), loadPendingMarkers(), loadAdoptedMarkers()]);
     } catch (e) {
       toast(`Couldn't ${action}: ${e.message}`);
     }

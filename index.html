@@ -19,6 +19,7 @@
   <div class="pill-toggle" id="view-toggle">
     <button class="active" data-view="verified">Verified</button>
     <button data-view="all">Verified + Pending</button>
+    <button data-view="adopt">Adopt a Marker</button>
   </div>
 
   <div class="spacer"></div>
@@ -87,6 +88,44 @@
   </div>
 </div>
 
+<!-- Adopt-a-marker modal: claim a donated waypoint that has no photo/comment yet -->
+<div class="modal-backdrop" id="adopt-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">Adopt a marker</div>
+      <h2>Fill in what you know</h2>
+    </header>
+    <div class="content">
+      <p class="hint">
+        This is one of the donated waypoints. Its in-game coordinates are
+        already locked in and can't be changed here — just add a name,
+        a photo if you have one, and a note on how to find it, then submit
+        it for review like any other marker.
+      </p>
+      <div class="coord-readout" id="adopt-coord-readout">In-game: —, —, —</div>
+
+      <label for="adopt-title">Name</label>
+      <input id="adopt-title" type="text" placeholder="e.g. Hidden chest behind waterfall" />
+
+      <label for="adopt-photo">Attach a photo</label>
+      <input id="adopt-photo" type="file" accept="image/*" />
+      <p class="hint" id="adopt-photo-hint"></p>
+
+      <label for="adopt-image">Or an image URL (optional)</label>
+      <input id="adopt-image" type="text" placeholder="Only needed if you're not attaching a photo above." />
+
+      <label for="adopt-comment">Comment</label>
+      <textarea id="adopt-comment" placeholder="How to find it - Anything else (even your username)"></textarea>
+
+      <p class="hint" id="adopt-hint"></p>
+    </div>
+    <footer>
+      <button class="btn" id="adopt-modal-cancel">Cancel</button>
+      <button class="btn primary" id="adopt-modal-submit">Submit for review</button>
+    </footer>
+  </div>
+</div>
+
 <!-- Legend / help modal -->
 <div class="modal-backdrop" id="legend-modal">
   <div class="modal">
@@ -98,6 +137,7 @@
       <p class="hint">
         <span style="color:var(--verified)">●</span> <b>Verified</b> — merged into <code>main</code>, visible to everyone.<br><br>
         <span style="color:var(--pending)">●</span> <b>Pending</b> — submitted by someone, not yet reviewed by the owner. Only shown when you switch to "Verified + Pending".<br><br>
+        <span style="color:var(--adopt)">●</span> <b>Adopt a Marker</b> — donated waypoints with coordinates but no photo or write-up yet. Click one, fill in what you know, and it goes into the pending queue like a normal submission.<br><br>
         Click <b>+ Propose marker</b>, then click a spot on the map. Fill in the form, attach a photo if you have one, and submit — no account or GitHub needed. It'll show up on the map once approved.
       </p>
     </div>
