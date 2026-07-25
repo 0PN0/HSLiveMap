@@ -298,6 +298,10 @@ export default {
     const url = new URL(request.url);
     const { pathname } = url;
 
+    if (pathname === "/api/debug/env") {
+      return json({ bindingKeys: Object.keys(env) });
+    }
+        
     try {
       if (pathname === "/api/markers" && request.method === "GET") {
         const markers = await listMarkers(env, "verified");
