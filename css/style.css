@@ -226,7 +226,7 @@ body {
    every marker at all times) so both the fade-out (zoom start) and the
    fade-in (zoom end) animate, not just one direction. */
 .leaflet-marker-icon {
-  transition: opacity 0.26s ease;
+  transition: opacity 0.16s ease;
 }
 .leaflet-zoom-hide {
   visibility: visible !important;
