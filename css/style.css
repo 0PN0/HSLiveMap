@@ -103,6 +103,10 @@ body {
 }
 .btn.primary:hover { background: var(--brass-dim); border-color: var(--brass-dim); color: var(--parchment); }
 .btn.placing { background: var(--danger); border-color: var(--danger); color: var(--parchment); }
+.btn.danger { border-color: var(--danger); color: var(--danger); }
+.btn.danger:hover { background: var(--danger); color: var(--parchment); }
+.owner-review-actions { display: flex; gap: 8px; margin-top: 8px; }
+.owner-review-actions .btn { flex: 1; padding: 6px 10px; font-size: 12px; }
 
 /* ── Map ─────────────────────────────────────────────────────────────── */
 #map {
