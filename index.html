@@ -58,14 +58,12 @@
         <option>other</option>
       </select>
       
-      <div style="display: none;">
-        <label for="f-photo">Attach a photo</label>
-        <input id="f-photo" type="file" accept="image/*" />
-        <p class="hint" id="photo-preview-hint"></p>
-      </div>
+      <label for="f-photo">Attach a photo</label>
+      <input id="f-photo" type="file" accept="image/*" />
+      <p class="hint" id="photo-preview-hint"></p>
 
-      <label for="f-image">Image URL</label>
-      <input id="f-image" type="text" placeholder="https://... e.g. an Imgur or https://imgtree.co/ Do not use discord image links they are temp." />
+      <label for="f-image">Or an image URL (optional)</label>
+      <input id="f-image" type="text" placeholder="Only needed if you're not attaching a photo above." />
 
       <label for="f-tags">Tags (comma-separated, optional)</label>
       <input id="f-tags" type="text" placeholder="e.g. solmara, blackfen, hollow, etc" />
@@ -92,8 +90,8 @@
     <div class="content">
       <p class="hint">
         <span style="color:var(--verified)">●</span> <b>Verified</b> — merged into <code>main</code>, visible to everyone.<br><br>
-        <span style="color:var(--pending)">●</span> <b>Pending</b> — proposed in an open pull request, not yet reviewed. Only shown when you switch to "Verified + Pending".<br><br>
-        Click <b>+ Propose marker</b>, then click a spot on the map. You'll fill in a short form and get a one-click link that opens GitHub with your marker file pre-filled — just review it and click "Propose new file" to open a pull request.
+        <span style="color:var(--pending)">●</span> <b>Pending</b> — submitted by someone, not yet reviewed by the owner. Only shown when you switch to "Verified + Pending".<br><br>
+        Click <b>+ Propose marker</b>, then click a spot on the map. Fill in the form, attach a photo if you have one, and submit — no account or GitHub needed. It'll show up on the map once approved.
       </p>
     </div>
     <footer>
@@ -134,30 +132,26 @@
   </div>
 </div>
 
-<!-- Owner mode: connect a GitHub token for direct publish + photo upload -->
+<!-- Owner mode: connect an admin key for direct publish + reviewing pending submissions -->
 <div class="modal-backdrop" id="owner-modal">
   <div class="modal">
     <header>
       <div class="eyebrow">Owner mode</div>
-      <h2 id="owner-modal-title">Connect your GitHub token</h2>
+      <h2 id="owner-modal-title">Connect your admin key</h2>
     </header>
     <div class="content">
       <p class="hint">
-        Paste a <b>fine-grained personal access token</b> scoped only to this
-        repo, with <b>Contents: Read and write</b> permission. This lets you
-        attach photos directly (uploaded straight into the repo) and publish
-        your own markers to <code>main</code> instantly, skipping the pull
-        request step other people go through.
+        Everyone else's markers land in a <b>pending</b> queue automatically —
+        no GitHub account, no pull requests. Paste your admin key here to
+        publish your own markers instantly and to see Approve / Reject
+        buttons on pending ones (switch to "Verified + Pending" to see them
+        on the map).
         <br><br>
-        The token is stored only in this browser's local storage. It is
-        never sent anywhere except directly to <code>api.github.com</code>
-        from your own device. Don't paste it on a shared computer, and don't
-        share this token with anyone.
-        <br><br>
-        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a fine-grained token →</a>
+        The key is stored only in this browser's local storage and sent only
+        to this site's own API.
       </p>
-      <label for="owner-token-input">Token</label>
-      <input id="owner-token-input" type="password" placeholder="github_pat_..." />
+      <label for="owner-token-input">Admin key</label>
+      <input id="owner-token-input" type="password" placeholder="Paste the admin key" />
       <p class="hint" id="owner-status"></p>
     </div>
     <footer>
@@ -168,7 +162,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/config.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
