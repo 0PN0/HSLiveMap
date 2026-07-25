@@ -217,6 +217,23 @@ body {
 }
 .tag-chip-btn:hover { border-color: var(--brass); color: var(--brass); }
 
+/* ── smooth marker fade during zoom (pairs with markerZoomAnimation:false) ─
+   Leaflet's default behavior for non-zoom-animated markers is to snap
+   `visibility: hidden` on at zoom start and snap it back off at zoom end —
+   that instant on/off is the "blip". visibility can't be transitioned by
+   itself, so we override it: keep markers visible and drive an opacity
+   transition instead. transition lives on .leaflet-marker-icon (present on
+   every marker at all times) so both the fade-out (zoom start) and the
+   fade-in (zoom end) animate, not just one direction. */
+.leaflet-marker-icon {
+  transition: opacity 0.16s ease;
+}
+.leaflet-zoom-hide {
+  visibility: visible !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
 /* pin icons */
 .pin {
   width: 26px; height: 26px;
