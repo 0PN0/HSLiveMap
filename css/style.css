@@ -152,6 +152,12 @@ body {
   margin: 3px 0 6px;
 }
 .marker-card p { font-size: 13px; line-height: 1.45; margin: 0; color: #3a3226; }
+.marker-card .ig-coords {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--brass);
+  margin: 6px 0 0;
+}
 .marker-card .pr-tag {
   display: inline-block;
   margin-top: 8px;
