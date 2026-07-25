@@ -93,6 +93,25 @@
   // downward (like an image). Leaflet's CRS.Simple has lat increasing
   // upward, so we negate y when converting.
   const toLatLng = (x, y) => L.latLng(-y, x);
+
+  // ── map pixel -> in-game X/Z ─────────────────────────────────────────
+  // A top-down map click only tells you where something is on the ground
+  // plane (in-game X and Z) — it can never tell you height (in-game Y),
+  // so that one is always left for a human to fill in.
+  // Coefficients below are an affine fit (a*mx + b*my + c) from 3 known
+  // calibration pairs of (map x,y) -> (in-game X,Z). Re-derive these if
+  // the map tiles/tile scale ever change.
+  const GAME_COORD_FIT = {
+    x: { a: 116709 / 189205, b: -21 / 37841, c: -397194537 / 189205 },
+    z: { a: -27 / 37841, e: 23411 / 37841, c: -64683928 / 37841 },
+  };
+  function mapToGameXZ(mx, my) {
+    const fx = GAME_COORD_FIT.x;
+    const fz = GAME_COORD_FIT.z;
+    const x_ig = Math.round(fx.a * mx + fx.b * my + fx.c);
+    const z_ig = Math.round(fz.a * mx + fz.e * my + fz.c);
+    return { x_ig, z_ig };
+  }
   const tileBounds = (t) => L.latLngBounds(toLatLng(t.x, t.y + t.height), toLatLng(t.x + t.width, t.y));
 
   // ── map setup ────────────────────────────────────────────────────────
@@ -154,12 +173,26 @@
            <button class="btn danger reject-btn" data-wp-id="${escapeHtml(id)}">Reject</button>
          </div>`
       : "";
+    const hasIg = m.x_ig != null || m.y_ig != null || m.z_ig != null;
+    const igReadout = hasIg
+      ? `<p class="ig-coords">In-game: ${m.x_ig ?? "?"}, ${m.y_ig ?? "?"}, ${m.z_ig ?? "?"}</p>`
+      : "";
+    const igEdit = isOwner()
+      ? `<div class="ig-edit-row" style="display:flex; gap:6px; margin-top:6px;">
+           <input class="ig-edit-x" type="number" step="1" placeholder="X" value="${m.x_ig ?? ""}" style="flex:1;width:0;" />
+           <input class="ig-edit-y" type="number" step="1" placeholder="Y" value="${m.y_ig ?? ""}" style="flex:1;width:0;" />
+           <input class="ig-edit-z" type="number" step="1" placeholder="Z" value="${m.z_ig ?? ""}" style="flex:1;width:0;" />
+           <button class="btn ig-edit-save" data-wp-id="${escapeHtml(id)}">Save</button>
+         </div>`
+      : "";
     return `<div class="marker-card ${done ? "done" : ""}">
       ${img}
       <div class="body">
         <div class="cat">${escapeHtml(m.category || "marker")}</div>
         <h3>${escapeHtml(m.title || "Untitled")}</h3>
         <p>${escapeHtml(m.comment || "")}</p>
+        ${igReadout}
+        ${igEdit}
         ${tagChips}
         ${pendingTag}
         ${ownerActions}
@@ -242,6 +275,44 @@
     const rejectBtn = container.querySelector(".reject-btn");
     if (approveBtn) approveBtn.addEventListener("click", () => handleReview(approveBtn.dataset.wpId, "approve"));
     if (rejectBtn) rejectBtn.addEventListener("click", () => handleReview(rejectBtn.dataset.wpId, "reject"));
+  });
+
+  // owner-only: save edited in-game X/Y/Z coordinates on an existing marker
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    const saveBtn = container && container.querySelector(".ig-edit-save");
+    if (!saveBtn) return;
+    saveBtn.addEventListener("click", async () => {
+      const id = saveBtn.dataset.wpId;
+      const xEl = container.querySelector(".ig-edit-x");
+      const yEl = container.querySelector(".ig-edit-y");
+      const zEl = container.querySelector(".ig-edit-z");
+      const toNumOrNull = (v) => (v.trim() === "" ? null : Number(v));
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Saving…";
+      try {
+        const res = await fetch("/api/admin/edit", {
+          method: "POST",
+          headers: { ...adminHeaders(), "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id,
+            x_ig: toNumOrNull(xEl.value),
+            y_ig: toNumOrNull(yEl.value),
+            z_ig: toNumOrNull(zEl.value),
+          }),
+        });
+        if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `API ${res.status}`);
+        const { marker } = await res.json();
+        const entry = registry.get(id);
+        if (entry) entry.data = marker;
+        toast("In-game coordinates saved.");
+      } catch (err) {
+        toast(`Couldn't save: ${err.message}`);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save";
+      }
+    });
   });
 
   async function handleReview(id, action) {
@@ -390,6 +461,10 @@
     if (!placing) return;
     pendingCoord = { x: Math.round(e.latlng.lng), y: Math.round(-e.latlng.lat) };
     coordReadout.textContent = `x: ${pendingCoord.x}, y: ${pendingCoord.y}`;
+    const { x_ig, z_ig } = mapToGameXZ(pendingCoord.x, pendingCoord.y);
+    document.getElementById("f-xig").value = x_ig;
+    document.getElementById("f-yig").value = "";
+    document.getElementById("f-zig").value = z_ig;
     setPlacing(false);
     document.getElementById("marker-modal-submit").textContent = isOwner() ? "Publish" : "Submit";
     document.querySelector("#marker-modal .eyebrow").textContent = isOwner()
@@ -412,6 +487,9 @@
     document.getElementById("f-image").value = "";
     document.getElementById("f-tags").value = "";
     document.getElementById("f-comment").value = "";
+    document.getElementById("f-xig").value = "";
+    document.getElementById("f-yig").value = "";
+    document.getElementById("f-zig").value = "";
     photoInput.value = "";
     photoHint.textContent = "";
     hint.textContent = "";
@@ -423,6 +501,9 @@
     const imageUrl = document.getElementById("f-image").value.trim();
     const tags = document.getElementById("f-tags").value.trim();
     const comment = document.getElementById("f-comment").value.trim();
+    const xIg = document.getElementById("f-xig").value.trim();
+    const yIg = document.getElementById("f-yig").value.trim();
+    const zIg = document.getElementById("f-zig").value.trim();
     const hint = document.getElementById("form-hint");
     const submitBtn = document.getElementById("marker-modal-submit");
     const photoFile = photoInput.files[0] || null;
@@ -445,6 +526,9 @@
       form.append("comment", comment);
       form.append("x", pendingCoord.x);
       form.append("y", pendingCoord.y);
+      if (xIg !== "") form.append("x_ig", xIg);
+      if (yIg !== "") form.append("y_ig", yIg);
+      if (zIg !== "") form.append("z_ig", zIg);
       if (imageUrl) form.append("imageUrl", imageUrl);
       if (photoFile) {
         toast("Resizing photo…", 2000);
