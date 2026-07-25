@@ -141,12 +141,6 @@
     // makes markers pop to their correct size once the zoom settles,
     // instead of scaling continuously and jarringly through it.
     markerZoomAnimation: false,
-    // Default maxBoundsViscosity is 0, which lets you drag past the
-    // bounds and then elastically springs the view back to center once
-    // you let go — that's the "pushed back to center" behavior. 1.0
-    // makes the bounds a hard, solid wall: you simply can't drag past
-    // them in the first place, no springy snap-back.
-    maxBoundsViscosity: 1.0,
   });
 
   const verifiedLayer = L.layerGroup().addTo(map);
@@ -180,7 +174,8 @@
       overall = overall ? overall.extend(b) : L.latLngBounds(b.getSouthWest(), b.getNorthEast());
     });
     map.fitBounds(overall);
-    map.setMaxBounds(overall.pad(0.25));
+    // No setMaxBounds here on purpose — panning is left completely free,
+    // no soft or hard limit at the edges.
   }
 
   // ── marker card popup ────────────────────────────────────────────────
