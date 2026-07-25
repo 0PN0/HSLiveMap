@@ -112,6 +112,20 @@
     const z_ig = Math.round(fz.a * mx + fz.e * my + fz.c);
     return { x_ig, z_ig };
   }
+  // Inverse of the fit above: given in-game X/Z, find the map pixel they
+  // came from. Needed so that hand-typed/edited in-game coordinates can
+  // actually move the pin, not just relabel it.
+  const GAME_COORD_FIT_INV = {
+    mx: { p: 117055 / 72204, q: 35 / 24068, r: 81970289 / 24068 },
+    my: { s: 45 / 24068, t: 38903 / 24068, u: 66593737 / 24068 },
+  };
+  function gameXZToMap(x_ig, z_ig) {
+    const fmx = GAME_COORD_FIT_INV.mx;
+    const fmy = GAME_COORD_FIT_INV.my;
+    const mx = Math.round(fmx.p * x_ig + fmx.q * z_ig + fmx.r);
+    const my = Math.round(fmy.s * x_ig + fmy.t * z_ig + fmy.u);
+    return { mx, my };
+  }
   const tileBounds = (t) => L.latLngBounds(toLatLng(t.x, t.y + t.height), toLatLng(t.x + t.width, t.y));
 
   // ── map setup ────────────────────────────────────────────────────────
@@ -288,24 +302,34 @@
       const yEl = container.querySelector(".ig-edit-y");
       const zEl = container.querySelector(".ig-edit-z");
       const toNumOrNull = (v) => (v.trim() === "" ? null : Number(v));
+      const x_ig = toNumOrNull(xEl.value);
+      const y_ig = toNumOrNull(yEl.value);
+      const z_ig = toNumOrNull(zEl.value);
       saveBtn.disabled = true;
       saveBtn.textContent = "Saving…";
       try {
+        const body = { id, x_ig, y_ig, z_ig };
+        // If both X and Z are set, recompute where the pin actually belongs
+        // on the map so it moves to match the corrected in-game location.
+        if (x_ig != null && z_ig != null) {
+          const { mx, my } = gameXZToMap(x_ig, z_ig);
+          body.x = mx;
+          body.y = my;
+        }
         const res = await fetch("/api/admin/edit", {
           method: "POST",
           headers: { ...adminHeaders(), "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id,
-            x_ig: toNumOrNull(xEl.value),
-            y_ig: toNumOrNull(yEl.value),
-            z_ig: toNumOrNull(zEl.value),
-          }),
+          body: JSON.stringify(body),
         });
         if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `API ${res.status}`);
         const { marker } = await res.json();
         const entry = registry.get(id);
-        if (entry) entry.data = marker;
-        toast("In-game coordinates saved.");
+        if (entry) {
+          entry.data = marker;
+          entry.marker.setLatLng(toLatLng(marker.x, marker.y));
+          if (entry.marker.isPopupOpen()) entry.marker.setPopupContent(popupHtml(marker, entry.pending, id));
+        }
+        toast(body.x != null ? "Saved — pin moved to match the new coordinates." : "In-game coordinates saved.");
       } catch (err) {
         toast(`Couldn't save: ${err.message}`);
       } finally {
@@ -439,6 +463,25 @@
   const coordReadout = document.getElementById("coord-readout");
   let placing = false;
   let pendingCoord = null;
+  let previewMarker = null;
+
+  function syncPendingCoordFromGameFields() {
+    const xEl = document.getElementById("f-xig");
+    const zEl = document.getElementById("f-zig");
+    const xVal = xEl.value.trim();
+    const zVal = zEl.value.trim();
+    if (xVal === "" || zVal === "") return; // need both to place a point
+    const x_ig = Number(xVal);
+    const z_ig = Number(zVal);
+    if (!Number.isFinite(x_ig) || !Number.isFinite(z_ig)) return;
+    const { mx, my } = gameXZToMap(x_ig, z_ig);
+    pendingCoord = { x: mx, y: my };
+    coordReadout.textContent = `x: ${mx}, y: ${my} (moved to match typed in-game X/Z)`;
+    if (previewMarker) map.removeLayer(previewMarker);
+    previewMarker = L.marker(toLatLng(mx, my), { icon: pinIcon("pending") }).addTo(map);
+  }
+  document.getElementById("f-xig").addEventListener("change", syncPendingCoordFromGameFields);
+  document.getElementById("f-zig").addEventListener("change", syncPendingCoordFromGameFields);
 
   function setPlacing(on) {
     placing = on;
@@ -465,6 +508,7 @@
     document.getElementById("f-xig").value = x_ig;
     document.getElementById("f-yig").value = "";
     document.getElementById("f-zig").value = z_ig;
+    if (previewMarker) { map.removeLayer(previewMarker); previewMarker = null; }
     setPlacing(false);
     document.getElementById("marker-modal-submit").textContent = isOwner() ? "Publish" : "Submit";
     document.querySelector("#marker-modal .eyebrow").textContent = isOwner()
@@ -473,7 +517,10 @@
     markerModal.classList.add("show");
   });
 
-  document.getElementById("marker-modal-cancel").onclick = () => markerModal.classList.remove("show");
+  document.getElementById("marker-modal-cancel").onclick = () => {
+    markerModal.classList.remove("show");
+    if (previewMarker) { map.removeLayer(previewMarker); previewMarker = null; }
+  };
 
   const photoInput = document.getElementById("f-photo");
   const photoHint = document.getElementById("photo-preview-hint");
@@ -545,6 +592,7 @@
       if (!res.ok) throw new Error(result.error || `API ${res.status}`);
 
       markerModal.classList.remove("show");
+      if (previewMarker) { map.removeLayer(previewMarker); previewMarker = null; }
       toast(
         result.status === "verified"
           ? "Published! Reloading the map…"
