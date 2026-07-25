@@ -1,14 +1,22 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hslivemap",
+  "main": "worker/index.js",
   "compatibility_date": "2026-07-19",
   "observability": {
     "enabled": true
   },
   "assets": {
     "directory": "."
+    "binding": "ASSETS"
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "MARKERS_KV",
+      "id": eea069bbbf23474d907a3cf8c436ebf9"
+    }
   ]
 }
