@@ -135,6 +135,18 @@
     maxZoom: 4,
     zoomSnap: 0.25,
     attributionControl: false,
+    // Markers are direct-child divIcons, so animating them WITH the zoom
+    // transform makes the pins themselves visibly stretch/shrink for the
+    // whole transition, not just the tiles underneath. Turning this off
+    // makes markers pop to their correct size once the zoom settles,
+    // instead of scaling continuously and jarringly through it.
+    markerZoomAnimation: false,
+    // Default maxBoundsViscosity is 0, which lets you drag past the
+    // bounds and then elastically springs the view back to center once
+    // you let go — that's the "pushed back to center" behavior. 1.0
+    // makes the bounds a hard, solid wall: you simply can't drag past
+    // them in the first place, no springy snap-back.
+    maxBoundsViscosity: 1.0,
   });
 
   const verifiedLayer = L.layerGroup().addTo(map);
