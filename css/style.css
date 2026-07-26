@@ -228,7 +228,7 @@ body {
 .leaflet-marker-icon {
   transition: opacity 0.16s ease;
 }
-.leaflet-zoom-hide {
+.leaflet-zoom-anim .leaflet-zoom-hide {
   visibility: visible !important;
   opacity: 0 !important;
   pointer-events: none;
