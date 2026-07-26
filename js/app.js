@@ -28,6 +28,72 @@
 
   // registry of every rendered marker so bulk actions can find them: id -> { marker, data }
   const registry = new Map();
+  // reverse lookup so popup-level features (instant-complete) can find an id from a Leaflet marker
+  const markerToId = new Map();
+
+  // ── known regions (special tags — always listed even with 0 markers yet) ─
+  // Add new region names here as they're introduced; everything else typed
+  // into the "tags" field just becomes a normal filterable tag.
+  const REGION_TAGS = [
+    "seaglass village",
+    "seabreak cove",
+    "blackfen",
+    "thornvale",
+    "glacaris",
+    "solmara",
+    "the hollow",
+  ];
+
+  // ── sidebar filter / appearance settings (persisted) ─────────────────
+  const SETTINGS_KEY = "map-explorer:ui-settings";
+  function loadSettings() {
+    try {
+      const s = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+      return {
+        theme: s.theme === "light" ? "light" : "dark",
+        instantComplete: !!s.instantComplete,
+        showDone: s.showDone !== false,
+        showNotDone: s.showNotDone !== false,
+        regions: s.regions && typeof s.regions === "object" ? s.regions : {},
+        tags: s.tags && typeof s.tags === "object" ? s.tags : {},
+      };
+    } catch {
+      return { theme: "dark", instantComplete: false, showDone: true, showNotDone: true, regions: {}, tags: {} };
+    }
+  }
+  const settings = loadSettings();
+  function saveSettings() {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  }
+  // default: regions start ON; tags start OFF except "chest"
+  function isRegionEnabled(r) {
+    return Object.prototype.hasOwnProperty.call(settings.regions, r) ? settings.regions[r] : true;
+  }
+  function isTagEnabled(t) {
+    return Object.prototype.hasOwnProperty.call(settings.tags, t) ? settings.tags[t] : t === "chest";
+  }
+
+  // ── custom per-type marker images (persisted, this browser only) ────
+  const PIN_IMAGES_KEY = "map-explorer:pin-images";
+  function loadPinImages() {
+    try { return JSON.parse(localStorage.getItem(PIN_IMAGES_KEY)) || {}; }
+    catch { return {}; }
+  }
+  let pinImages = loadPinImages();
+  function savePinImages() {
+    localStorage.setItem(PIN_IMAGES_KEY, JSON.stringify(pinImages));
+  }
+  const STYLE_GROUPS = [
+    { key: "chest", label: "Chests" },
+    { key: "collectible", label: "Collectibles" },
+    { key: "quest", label: "Quest markers" },
+    { key: "enemy / boss", label: "Enemies (generic)" },
+    { key: "boss", label: "Bosses (tag: boss)" },
+    { key: "miniboss", label: "Mini-bosses (tag: miniboss)" },
+    { key: "resource / material", label: "Resources / materials" },
+    { key: "viewpoint", label: "Viewpoints" },
+    { key: "other", label: "Other" },
+  ];
 
   function matchesTag(data, tag) {
     if (!tag) return false;
@@ -42,8 +108,23 @@
     if (!entry) return;
     const { marker, data, pending } = entry;
     const kind = isDone(id) ? "done" : pending ? "pending" : "verified";
-    marker.setIcon(pinIcon(kind));
+    marker.setIcon(pinIcon(kind, data));
     if (marker.isPopupOpen()) marker.setPopupContent(popupHtml(data, pending, id));
+  }
+
+  function refreshAllVisuals() {
+    registry.forEach((_entry, id) => refreshMarkerVisual(id));
+  }
+
+  // Which style group a marker belongs to for custom-image / built-in glyph
+  // purposes: "boss"/"miniboss" tags win over the generic category, since
+  // those are the ones players most want to tell apart at a glance.
+  function styleGroupFor(data) {
+    if (!data) return "other";
+    const tags = (data.tags || []).map((t) => (t || "").toLowerCase());
+    if (tags.includes("boss")) return "boss";
+    if (tags.includes("miniboss") || tags.includes("mini-boss") || tags.includes("mini boss")) return "miniboss";
+    return (data.category || "other").toLowerCase();
   }
 
   function uncompleteWhere(predicate) {
@@ -148,10 +229,22 @@
   const adoptLayer = L.layerGroup(); // added/removed by the view toggle
   const adoptMarkerData = new Map(); // id -> raw marker data, for opening the adopt modal
 
-  function pinIcon(kind) {
+  function pinIcon(kind, data) {
+    const group = styleGroupFor(data);
+    const custom = pinImages[group];
+    if (custom) {
+      return L.divIcon({
+        className: "",
+        html: `<div class="pin-custom ${kind}" style="background-image:url('${custom}')"></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 28],
+        popupAnchor: [0, -28],
+      });
+    }
+    const groupClass = `group-${group.replace(/[^a-z0-9]+/g, "-")}`;
     return L.divIcon({
       className: "",
-      html: `<div class="pin ${kind}"></div>`,
+      html: `<div class="pin ${kind} ${groupClass}"></div>`,
       iconSize: [26, 26],
       iconAnchor: [13, 24],
       popupAnchor: [0, -26],
@@ -222,6 +315,7 @@
         <button class="complete-toggle ${done ? "is-done" : ""}" data-wp-id="${escapeHtml(id)}">
           ${done ? "✓ Completed — click to undo" : "Mark completed"}
         </button>
+        <button class="report-flag" data-wp-id="${escapeHtml(id)}" title="Report a problem with this marker">⚑ Report a problem</button>
       </div>
     </div>`;
   }
@@ -254,13 +348,17 @@
       verifiedLayer.clearLayers();
       markers.forEach((m) => {
         const id = m.id;
-        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "verified") })
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "verified", m) })
           .bindPopup(popupHtml(m, null, id))
           .addTo(verifiedLayer);
         registry.set(id, { marker, data: m, pending: null });
+        markerToId.set(marker, id);
+        attachDragCompleteHandlers(marker, id);
       });
       updateProgressCount();
       renderTagChips();
+      renderFilterLists();
+      applyFilters();
     } catch (e) {
       console.warn("Could not load verified markers", e);
       toast("Couldn't load markers — try refreshing.");
@@ -277,14 +375,18 @@
       pendingLayer.clearLayers();
       markers.forEach((m) => {
         const id = m.id;
-        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "pending") })
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon(isDone(id) ? "done" : "pending", m) })
           .bindPopup(popupHtml(m, {}, id))
           .addTo(pendingLayer);
         registry.set(id, { marker, data: m, pending: {} });
+        markerToId.set(marker, id);
+        attachDragCompleteHandlers(marker, id);
       });
       pendingLoaded = true;
       updateProgressCount();
       renderTagChips();
+      renderFilterLists();
+      applyFilters();
     } catch (e) {
       console.warn("Could not load pending markers", e);
       toast("Couldn't load pending submissions.");
@@ -302,7 +404,7 @@
       adoptMarkerData.clear();
       markers.forEach((m) => {
         const id = m.id;
-        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon("adopt") })
+        const marker = L.marker(toLatLng(m.x, m.y), { icon: pinIcon("adopt", m) })
           .bindPopup(adoptPopupHtml(m, id))
           .addTo(adoptLayer);
         adoptMarkerData.set(id, m);
@@ -761,8 +863,328 @@
     }
   };
 
+  // ── filtering: status + regions + tags ───────────────────────────────
+  // A marker passes if: its done-state matches an enabled status switch,
+  // AND (it carries no region tag, OR at least one of its region tags is
+  // enabled), AND at least one of its non-region tags/category is enabled.
+  function passesFilters(data, id) {
+    const done = isDone(id);
+    if (done && !settings.showDone) return false;
+    if (!done && !settings.showNotDone) return false;
+
+    const allTags = [(data.category || "").toLowerCase(), ...((data.tags || []).map((t) => (t || "").toLowerCase()))].filter(Boolean);
+    const regionTags = allTags.filter((t) => REGION_TAGS.includes(t));
+    if (regionTags.length && !regionTags.some(isRegionEnabled)) return false;
+
+    const nonRegionTags = allTags.filter((t) => !REGION_TAGS.includes(t));
+    if (nonRegionTags.length && !nonRegionTags.some(isTagEnabled)) return false;
+
+    return true;
+  }
+
+  function applyFilters() {
+    registry.forEach((entry, id) => {
+      const show = passesFilters(entry.data, id);
+      const group = entry.pending ? pendingLayer : verifiedLayer;
+      const inGroup = group.hasLayer(entry.marker);
+      if (show && !inGroup) group.addLayer(entry.marker);
+      if (!show && inGroup) group.removeLayer(entry.marker);
+    });
+  }
+
+  // ── sidebar: open/close ──────────────────────────────────────────────
+  const sidebar = document.getElementById("sidebar");
+  const sidebarScrim = document.getElementById("sidebar-scrim");
+  function openSidebar() {
+    renderFilterLists();
+    sidebar.classList.add("open");
+    sidebarScrim.classList.add("show");
+  }
+  function closeSidebar() {
+    sidebar.classList.remove("open");
+    sidebarScrim.classList.remove("show");
+  }
+  document.getElementById("filters-btn").addEventListener("click", openSidebar);
+  document.getElementById("sidebar-close").addEventListener("click", closeSidebar);
+  sidebarScrim.addEventListener("click", closeSidebar);
+
+  // ── sidebar: status switches ─────────────────────────────────────────
+  const showDoneEl = document.getElementById("filter-show-done");
+  const showNotDoneEl = document.getElementById("filter-show-notdone");
+  showDoneEl.checked = settings.showDone;
+  showNotDoneEl.checked = settings.showNotDone;
+  showDoneEl.addEventListener("change", () => {
+    settings.showDone = showDoneEl.checked;
+    saveSettings();
+    applyFilters();
+  });
+  showNotDoneEl.addEventListener("change", () => {
+    settings.showNotDone = showNotDoneEl.checked;
+    saveSettings();
+    applyFilters();
+  });
+
+  // ── sidebar: region + tag checklists (rebuilt whenever markers load) ──
+  function makeCheckRow(kind, key, label, checked, onChange) {
+    const row = document.createElement("label");
+    row.className = "check-row";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = checked;
+    input.addEventListener("change", () => onChange(input.checked));
+    row.appendChild(input);
+    row.appendChild(document.createTextNode(label));
+    return row;
+  }
+
+  function renderFilterLists() {
+    const regionListEl = document.getElementById("region-filter-list");
+    const tagListEl = document.getElementById("tag-filter-list");
+    regionListEl.innerHTML = "";
+    tagListEl.innerHTML = "";
+
+    const seenTags = new Set();
+    registry.forEach(({ data }) => {
+      if (data.category) seenTags.add(data.category.toLowerCase());
+      (data.tags || []).forEach((t) => t && seenTags.add(t.toLowerCase()));
+    });
+
+    REGION_TAGS.forEach((r) => {
+      regionListEl.appendChild(
+        makeCheckRow("region", r, r, isRegionEnabled(r), (checked) => {
+          settings.regions[r] = checked;
+          saveSettings();
+          applyFilters();
+        })
+      );
+    });
+
+    [...seenTags]
+      .filter((t) => !REGION_TAGS.includes(t))
+      .sort()
+      .forEach((t) => {
+        tagListEl.appendChild(
+          makeCheckRow("tag", t, t, isTagEnabled(t), (checked) => {
+            settings.tags[t] = checked;
+            saveSettings();
+            applyFilters();
+          })
+        );
+      });
+  }
+
+  document.querySelectorAll(".mini-link").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const isRegion = btn.dataset.list === "region";
+      const on = btn.dataset.action === "all";
+      if (isRegion) {
+        REGION_TAGS.forEach((r) => (settings.regions[r] = on));
+      } else {
+        const seenTags = new Set();
+        registry.forEach(({ data }) => {
+          if (data.category) seenTags.add(data.category.toLowerCase());
+          (data.tags || []).forEach((t) => t && seenTags.add(t.toLowerCase()));
+        });
+        [...seenTags].filter((t) => !REGION_TAGS.includes(t)).forEach((t) => (settings.tags[t] = on));
+      }
+      saveSettings();
+      renderFilterLists();
+      applyFilters();
+    });
+  });
+
+  // ── bulk actions: drag-to-complete ────────────────────────────────────
+  // While active, map panning is disabled so a drag paints markers instead
+  // of moving the view; every marker hovered while the mouse is held down
+  // gets marked complete.
+  let bulkMode = false;
+  let mouseIsDown = false;
+  document.addEventListener("mousedown", () => { mouseIsDown = true; });
+  document.addEventListener("mouseup", () => { mouseIsDown = false; });
+
+  const bulkBtn = document.getElementById("bulk-complete-btn");
+  function setBulkMode(on) {
+    bulkMode = on;
+    bulkBtn.textContent = `Drag to complete: ${on ? "ON" : "off"}`;
+    bulkBtn.classList.toggle("placing", on);
+    if (on) {
+      map.dragging.disable();
+      map.getContainer().style.cursor = "crosshair";
+      toast("Drag across markers to mark them completed. Click again to stop.", 4500);
+    } else {
+      map.dragging.enable();
+      map.getContainer().style.cursor = "";
+    }
+  }
+  bulkBtn.addEventListener("click", () => setBulkMode(!bulkMode));
+
+  function completeFromBulkDrag(id) {
+    if (isDone(id)) return;
+    setDone(id, true);
+    refreshMarkerVisual(id);
+    updateProgressCount();
+    applyFilters();
+  }
+  function attachDragCompleteHandlers(marker, id) {
+    marker.on("mousedown", () => { if (bulkMode) completeFromBulkDrag(id); });
+    marker.on("mouseover", () => { if (bulkMode && mouseIsDown) completeFromBulkDrag(id); });
+  }
+
+  // ── instant complete: clicking a marker completes it instead of opening
+  // its card. Also used to swallow the popup that a bulk-mode click/drag
+  // would otherwise briefly flash open. ────────────────────────────────
+  const instantCompleteEl = document.getElementById("instant-complete-toggle");
+  instantCompleteEl.checked = settings.instantComplete;
+  instantCompleteEl.addEventListener("change", () => {
+    settings.instantComplete = instantCompleteEl.checked;
+    saveSettings();
+  });
+  map.on("popupopen", (e) => {
+    const marker = e.popup._source;
+    const id = markerToId.get(marker);
+    if (!id) return;
+    if (bulkMode) {
+      map.closePopup();
+      return;
+    }
+    if (settings.instantComplete) {
+      map.closePopup();
+      setDone(id, !isDone(id));
+      refreshMarkerVisual(id);
+      updateProgressCount();
+      applyFilters();
+    }
+  });
+
+  // ── clickable marker photos: open a lightbox ─────────────────────────
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add("show");
+  }
+  lightbox.addEventListener("click", () => lightbox.classList.remove("show"));
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    const img = container && container.querySelector(".marker-card img");
+    if (img) img.addEventListener("click", () => openLightbox(img.src));
+  });
+
+  // ── report-a-problem flag: opens a pre-filled GitHub issue, no auth ──
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    const btn = container && container.querySelector(".report-flag");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.wpId;
+      const entry = registry.get(id);
+      const m = entry ? entry.data : null;
+      const titleText = `Marker issue: ${(m && m.title) || id}`;
+      const lines = [
+        `Marker ID: ${id}`,
+        m ? `Title: ${m.title}` : "",
+        m ? `Category: ${m.category}` : "",
+        m && m.x_ig != null ? `In-game coords: ${m.x_ig}, ${m.y_ig ?? "?"}, ${m.z_ig}` : "",
+        "",
+        "What's wrong with this marker?",
+        "",
+      ].filter((l) => l !== "");
+      const url =
+        "https://github.com/0PN0/HSLiveMap/issues/new" +
+        `?title=${encodeURIComponent(titleText)}` +
+        `&body=${encodeURIComponent(lines.join("\n"))}`;
+      window.open(url, "_blank", "noopener");
+    });
+  });
+
+  // ── appearance: dark/light theme ─────────────────────────────────────
+  const lightModeEl = document.getElementById("light-mode-toggle");
+  function applyTheme() {
+    document.body.dataset.theme = settings.theme;
+    lightModeEl.checked = settings.theme === "light";
+  }
+  lightModeEl.addEventListener("change", () => {
+    settings.theme = lightModeEl.checked ? "light" : "dark";
+    saveSettings();
+    applyTheme();
+  });
+
+  // ── appearance: custom per-type marker images ────────────────────────
+  const styleModal = document.getElementById("style-modal");
+  document.getElementById("style-btn").addEventListener("click", () => {
+    renderStyleUploadList();
+    styleModal.classList.add("show");
+  });
+  document.getElementById("style-close-btn").addEventListener("click", () => styleModal.classList.remove("show"));
+  document.getElementById("style-reset-btn").addEventListener("click", () => {
+    pinImages = {};
+    savePinImages();
+    renderStyleUploadList();
+    refreshAllVisuals();
+    toast("Marker images reset to default.");
+  });
+
+  function fileToResizedDataUrl(file, maxDim = 96) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          const scale = maxDim / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/png"));
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  function renderStyleUploadList() {
+    const wrap = document.getElementById("style-upload-list");
+    wrap.innerHTML = "";
+    STYLE_GROUPS.forEach((g) => {
+      const current = pinImages[g.key];
+      const row = document.createElement("div");
+      row.className = "style-row";
+      row.innerHTML = `
+        <div class="style-row-label">${escapeHtml(g.label)}</div>
+        <div class="style-row-controls">
+          ${current ? `<img class="style-preview" src="${current}" alt="">` : `<span class="style-preview-empty"></span>`}
+          <input type="file" accept="image/*" class="style-file-input" data-group="${escapeHtml(g.key)}">
+          ${current ? `<button class="btn style-remove-btn" data-group="${escapeHtml(g.key)}">Remove</button>` : ""}
+        </div>`;
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll(".style-file-input").forEach((input) => {
+      input.addEventListener("change", async () => {
+        const f = input.files[0];
+        if (!f) return;
+        const dataUrl = await fileToResizedDataUrl(f);
+        pinImages[input.dataset.group] = dataUrl;
+        savePinImages();
+        renderStyleUploadList();
+        refreshAllVisuals();
+      });
+    });
+    wrap.querySelectorAll(".style-remove-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        delete pinImages[btn.dataset.group];
+        savePinImages();
+        renderStyleUploadList();
+        refreshAllVisuals();
+      });
+    });
+  }
+
   // ── boot ─────────────────────────────────────────────────────────────
   (async function init() {
+    applyTheme();
     refreshOwnerStatus();
     await loadTiles();
     await loadVerifiedMarkers();
