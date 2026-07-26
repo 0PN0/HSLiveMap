@@ -24,10 +24,86 @@
 
   <div class="spacer"></div>
 
+  <button class="btn" id="filters-btn">Filters &amp; Style</button>
   <button class="btn" id="progress-btn">Progress</button>
   <button class="btn" id="owner-btn">Owner mode</button>
   <button class="btn" id="legend-btn">Legend</button>
   <button class="btn primary" id="add-marker-btn">+ Propose marker</button>
+</div>
+
+<!-- Sidebar: filters (regions/tags/status) + bulk actions + appearance -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <h2>Filters &amp; style</h2>
+    <button class="icon-btn" id="sidebar-close" title="Close">&times;</button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Status</div>
+    <label class="check-row"><input type="checkbox" id="filter-show-done" checked> Show completed</label>
+    <label class="check-row"><input type="checkbox" id="filter-show-notdone" checked> Show not completed</label>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">
+      Regions
+      <button class="mini-link" data-list="region" data-action="all">all</button> ·
+      <button class="mini-link" data-list="region" data-action="none">none</button>
+    </div>
+    <div id="region-filter-list" class="check-list"></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">
+      Tags &amp; types
+      <button class="mini-link" data-list="tag" data-action="all">all</button> ·
+      <button class="mini-link" data-list="tag" data-action="none">none</button>
+    </div>
+    <p class="hint" style="margin:0 0 8px;">Chests are on by default; everything else (mobs, bosses, minibosses, etc.) starts off.</p>
+    <div id="tag-filter-list" class="check-list"></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Bulk actions</div>
+    <button class="btn" id="bulk-complete-btn" style="width:100%;">Drag to complete: off</button>
+    <label class="check-row" style="margin-top:10px;">
+      <input type="checkbox" id="instant-complete-toggle"> Click a marker = instant complete (skip the card)
+    </label>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Appearance</div>
+    <label class="check-row"><input type="checkbox" id="light-mode-toggle"> Light mode</label>
+    <button class="btn" id="style-btn" style="width:100%;margin-top:10px;">Custom marker images…</button>
+  </div>
+</aside>
+<div id="sidebar-scrim"></div>
+
+<!-- Style / appearance modal: upload a custom image per marker type -->
+<div class="modal-backdrop" id="style-modal">
+  <div class="modal">
+    <header>
+      <div class="eyebrow">Appearance</div>
+      <h2>Custom marker images</h2>
+    </header>
+    <div class="content">
+      <p class="hint">
+        Upload an image for any type below to replace its default colored pin
+        on the map. Leave a type blank to keep the default look. Images are
+        stored only in this browser (not shared, not uploaded anywhere).
+      </p>
+      <div id="style-upload-list"></div>
+    </div>
+    <footer>
+      <button class="btn" id="style-reset-btn">Reset all to default</button>
+      <button class="btn primary" id="style-close-btn">Done</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Lightbox for enlarging marker photos -->
+<div id="lightbox">
+  <img id="lightbox-img" src="" alt="" />
 </div>
 
 <div id="map" class="map-grid-bg"></div>
