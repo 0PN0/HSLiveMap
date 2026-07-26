@@ -50,7 +50,7 @@
     try {
       const s = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
       return {
-        theme: s.theme === "light" ? "light" : "dark",
+        theme: ["light", "eastern", "royal", "plasma"].includes(s.theme) ? s.theme : "dark",
         instantComplete: !!s.instantComplete,
         showDone: s.showDone !== false,
         showNotDone: s.showNotDone !== false,
@@ -892,21 +892,22 @@
     });
   }
 
-  // ── sidebar: open/close ──────────────────────────────────────────────
+  // ── sidebar: open/close via the left-edge tab (> to open, < to collapse) ─
   const sidebar = document.getElementById("sidebar");
   const sidebarScrim = document.getElementById("sidebar-scrim");
-  function openSidebar() {
-    renderFilterLists();
-    sidebar.classList.add("open");
-    sidebarScrim.classList.add("show");
+  const sidebarTab = document.getElementById("sidebar-tab");
+  let sidebarOpen = false;
+  function setSidebarOpen(on) {
+    sidebarOpen = on;
+    sidebar.classList.toggle("open", on);
+    sidebarScrim.classList.toggle("show", on);
+    sidebarTab.classList.toggle("open", on);
+    sidebarTab.textContent = on ? "‹" : "›";
+    if (on) renderFilterLists();
   }
-  function closeSidebar() {
-    sidebar.classList.remove("open");
-    sidebarScrim.classList.remove("show");
-  }
-  document.getElementById("filters-btn").addEventListener("click", openSidebar);
-  document.getElementById("sidebar-close").addEventListener("click", closeSidebar);
-  sidebarScrim.addEventListener("click", closeSidebar);
+  sidebarTab.addEventListener("click", () => setSidebarOpen(!sidebarOpen));
+  document.getElementById("sidebar-close").addEventListener("click", () => setSidebarOpen(false));
+  sidebarScrim.addEventListener("click", () => setSidebarOpen(false));
 
   // ── sidebar: status switches ─────────────────────────────────────────
   const showDoneEl = document.getElementById("filter-show-done");
@@ -994,13 +995,16 @@
   });
 
   // ── bulk actions: drag-to-complete ────────────────────────────────────
-  // While active, map panning is disabled so a drag paints markers instead
-  // of moving the view; every marker hovered while the mouse is held down
-  // gets marked complete.
+  // Left click is always reserved for panning the map. This feature uses a
+  // held RIGHT mouse button instead, so the two never fight over the same
+  // gesture and the map never needs its normal dragging disabled. It only
+  // ever marks a marker complete — it can never undo a completed one
+  // (chests included), even if you drag back over it.
   let bulkMode = false;
-  let mouseIsDown = false;
-  document.addEventListener("mousedown", () => { mouseIsDown = true; });
-  document.addEventListener("mouseup", () => { mouseIsDown = false; });
+  let rightMouseDown = false;
+  document.addEventListener("mousedown", (e) => { if (e.button === 2) rightMouseDown = true; });
+  document.addEventListener("mouseup", (e) => { if (e.button === 2) rightMouseDown = false; });
+  map.getContainer().addEventListener("contextmenu", (e) => { if (bulkMode) e.preventDefault(); });
 
   const bulkBtn = document.getElementById("bulk-complete-btn");
   function setBulkMode(on) {
@@ -1008,26 +1012,28 @@
     bulkBtn.textContent = `Drag to complete: ${on ? "ON" : "off"}`;
     bulkBtn.classList.toggle("placing", on);
     if (on) {
-      map.dragging.disable();
-      map.getContainer().style.cursor = "crosshair";
-      toast("Drag across markers to mark them completed. Click again to stop.", 4500);
-    } else {
-      map.dragging.enable();
-      map.getContainer().style.cursor = "";
+      toast("Left click still pans the map — hold the right mouse button and drag across markers to complete them.", 5000);
     }
   }
   bulkBtn.addEventListener("click", () => setBulkMode(!bulkMode));
 
   function completeFromBulkDrag(id) {
-    if (isDone(id)) return;
+    if (isDone(id)) return; // never uncompletes, chests included
     setDone(id, true);
     refreshMarkerVisual(id);
     updateProgressCount();
     applyFilters();
   }
   function attachDragCompleteHandlers(marker, id) {
-    marker.on("mousedown", () => { if (bulkMode) completeFromBulkDrag(id); });
-    marker.on("mouseover", () => { if (bulkMode && mouseIsDown) completeFromBulkDrag(id); });
+    marker.on("mousedown", (e) => {
+      if (bulkMode && e.originalEvent && e.originalEvent.button === 2) {
+        L.DomEvent.preventDefault(e.originalEvent);
+        completeFromBulkDrag(id);
+      }
+    });
+    marker.on("mouseover", () => {
+      if (bulkMode && rightMouseDown) completeFromBulkDrag(id);
+    });
   }
 
   // ── instant complete: clicking a marker completes it instead of opening
@@ -1097,14 +1103,14 @@
     });
   });
 
-  // ── appearance: dark/light theme ─────────────────────────────────────
-  const lightModeEl = document.getElementById("light-mode-toggle");
+  // ── appearance: color theme ───────────────────────────────────────────
+  const themeSelectEl = document.getElementById("theme-select");
   function applyTheme() {
     document.body.dataset.theme = settings.theme;
-    lightModeEl.checked = settings.theme === "light";
+    themeSelectEl.value = settings.theme;
   }
-  lightModeEl.addEventListener("change", () => {
-    settings.theme = lightModeEl.checked ? "light" : "dark";
+  themeSelectEl.addEventListener("change", () => {
+    settings.theme = themeSelectEl.value;
     saveSettings();
     applyTheme();
   });
