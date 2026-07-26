@@ -139,6 +139,27 @@ body {
 .leaflet-popup-tip { background: var(--parchment); }
 .leaflet-popup-content { margin: 0; width: 260px !important; }
 
+.marker-card { position: relative; }
+.marker-card.owner-deletable .body { padding-bottom: 46px; }
+.delete-marker-btn {
+  position: absolute;
+  right: 10px; bottom: 10px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  color: var(--danger);
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.delete-marker-btn:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+
 .marker-card img {
   width: 100%;
   height: 150px;

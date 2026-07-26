@@ -12,6 +12,9 @@
  *   POST /api/admin/reject     -> reject a marker (needs X-Admin-Key) — restores
  *                                 claimed adoptions back to "adopted" instead of
  *                                 deleting them outright, using their donorSnapshot
+ *   POST /api/admin/delete     -> permanently delete a marker of any status
+ *                                 (needs X-Admin-Key) — unlike reject, this never
+ *                                 restores a claimed adoption; it's just gone
  *   POST /api/admin/edit       -> edit a marker's in-game X/Y/Z (needs X-Admin-Key)
  *   GET  /img/<id>             -> serves an uploaded image
  *
@@ -293,6 +296,18 @@ async function handleAdminAction(request, env, action) {
     return json({ ok: true });
   }
 
+  if (action === "delete") {
+    // Hard delete: unlike "reject", this never restores a claimed adoption
+    // back into the Adopt-a-Marker pool — it just removes the marker
+    // outright, whatever its status (verified, pending, or adopted).
+    delete index[id];
+    await saveIndex(env, index);
+    if (marker.image && marker.image.startsWith("/img/")) {
+      await env.MARKERS_KV.delete(`image:${id}`);
+    }
+    return json({ ok: true });
+  }
+
   return json({ error: "Unknown action." }, { status: 400 });
 }
 
@@ -351,6 +366,10 @@ export default {
 
       if (pathname === "/api/admin/reject" && request.method === "POST") {
         return await handleAdminAction(request, env, "reject");
+      }
+
+      if (pathname === "/api/admin/delete" && request.method === "POST") {
+        return await handleAdminAction(request, env, "delete");
       }
 
       if (pathname === "/api/admin/edit" && request.method === "POST") {

@@ -170,6 +170,19 @@
   const isOwner = () => !!getAdminKey();
   const adminHeaders = () => ({ "X-Admin-Key": getAdminKey() });
 
+  // The "or an image URL" option in the propose/adopt forms is owner-only —
+  // everyone else attaches a photo instead. Called whenever a form opens
+  // and whenever owner mode connects/disconnects.
+  function syncOwnerOnlyFields() {
+    const show = isOwner();
+    const fImgGroup = document.getElementById("f-image-group");
+    fImgGroup.style.display = show ? "" : "none";
+    if (!show) document.getElementById("f-image").value = "";
+    const adoptImgGroup = document.getElementById("adopt-image-group");
+    adoptImgGroup.style.display = show ? "" : "none";
+    if (!show) document.getElementById("adopt-image").value = "";
+  }
+
   // ── coordinate helpers ───────────────────────────────────────────────
   // Tiles/markers are authored in "map pixel" space with y increasing
   // downward (like an image). Leaflet's CRS.Simple has lat increasing
@@ -310,7 +323,8 @@
            <button class="btn ig-edit-save" data-wp-id="${escapeHtml(id)}">Save</button>
          </div>`
       : "";
-    return `<div class="marker-card ${done ? "done" : ""}">
+    const deleteBtn = isOwner() ? deleteBtnHtml(id) : "";
+    return `<div class="marker-card ${done ? "done" : ""} ${isOwner() ? "owner-deletable" : ""}">
       ${img}
       <div class="body">
         <div class="cat">${escapeHtml(m.category || "marker")}</div>
@@ -326,7 +340,11 @@
         </button>
         <button class="report-flag" data-wp-id="${escapeHtml(id)}" title="Report a problem with this marker">⚑ Report a problem</button>
       </div>
+      ${deleteBtn}
     </div>`;
+  }
+  function deleteBtnHtml(id) {
+    return `<button class="delete-marker-btn" data-wp-id="${escapeHtml(id)}" title="Delete this marker">🗑</button>`;
   }
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -337,7 +355,7 @@
     const tagChips = (m.tags || []).length
       ? `<div class="tag-chips">${m.tags.map((t) => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("")}</div>`
       : "";
-    return `<div class="marker-card">
+    return `<div class="marker-card ${isOwner() ? "owner-deletable" : ""}">
       <div class="body">
         <div class="cat">${escapeHtml(m.category || "marker")}</div>
         <h3>${escapeHtml(m.title || "Untitled")}</h3>
@@ -345,6 +363,7 @@
         ${tagChips}
         <button class="btn primary adopt-btn" data-wp-id="${escapeHtml(id)}" style="width:100%;margin-top:10px;">Adopt this marker</button>
       </div>
+      ${isOwner() ? deleteBtnHtml(id) : ""}
     </div>`;
   }
 
@@ -469,6 +488,7 @@
     document.getElementById("adopt-hint").textContent = "";
     document.getElementById("adopt-coord-readout").textContent =
       `In-game: ${m.x_ig ?? "?"}, ${m.y_ig ?? "?"}, ${m.z_ig ?? "?"}`;
+    syncOwnerOnlyFields();
     map.closePopup();
     adoptModal.classList.add("show");
   }
@@ -548,6 +568,14 @@
     if (rejectBtn) rejectBtn.addEventListener("click", () => handleReview(rejectBtn.dataset.wpId, "reject"));
   });
 
+  // trash icon inside a card (owner only) -> permanently delete that marker
+  map.on("popupopen", (e) => {
+    const container = e.popup.getElement();
+    const deleteBtn = container && container.querySelector(".delete-marker-btn");
+    if (!deleteBtn) return;
+    deleteBtn.addEventListener("click", () => handleDelete(deleteBtn.dataset.wpId));
+  });
+
   // owner-only: save edited in-game X/Y/Z coordinates on an existing marker
   map.on("popupopen", (e) => {
     const container = e.popup.getElement();
@@ -613,6 +641,25 @@
     }
   }
 
+  async function handleDelete(id) {
+    if (!confirm("Delete this marker? This can't be undone.")) return;
+    try {
+      const res = await fetch("/api/admin/delete", {
+        method: "POST",
+        headers: { ...adminHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `API ${res.status}`);
+      toast("Marker deleted.");
+      map.closePopup();
+      registry.delete(id);
+      adoptMarkerData.delete(id);
+      await Promise.all([loadVerifiedMarkers(), loadPendingMarkers(), loadAdoptedMarkers()]);
+    } catch (e) {
+      toast(`Couldn't delete: ${e.message}`);
+    }
+  }
+
   // ── owner mode modal ──────────────────────────────────────────────────
   const ownerModal = document.getElementById("owner-modal");
   const ownerStatus = document.getElementById("owner-status");
@@ -622,6 +669,7 @@
       : "Not connected — your markers go into the pending queue for the owner to approve.";
     ownerStatus.style.color = isOwner() ? "var(--verified)" : "var(--parchment-dim)";
     addBtnLabel();
+    syncOwnerOnlyFields();
   }
   document.getElementById("owner-btn").onclick = () => {
     document.getElementById("owner-token-input").value = "";
@@ -771,6 +819,7 @@
     document.querySelector("#marker-modal .eyebrow").textContent = isOwner()
       ? "New marker · publishing directly"
       : "New marker · goes to pending review";
+    syncOwnerOnlyFields();
     markerModal.classList.add("show");
   });
 
