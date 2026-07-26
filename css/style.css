@@ -437,24 +437,26 @@ body {
   left: 0;
   transform: translateY(-50%);
   z-index: 1650;
-  width: 26px;
-  height: 58px;
+  width: 34px;
+  height: 74px;
   background: var(--ink-2);
   border: 1px solid var(--line);
   border-left: none;
   border-radius: 0 8px 8px 0;
   color: var(--brass);
-  font-size: 17px;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: left 0.2s ease;
+  transition: left 0.2s ease, opacity 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
 }
-#sidebar-tab:hover { color: var(--parchment); }
-#sidebar-tab.open { left: 300px; }
+#sidebar-tab:hover { color: var(--parchment); opacity: 1; }
+#sidebar-tab.open { left: 300px; opacity: 0.5; }
+#sidebar-tab.open:hover { opacity: 1; }
 @media (max-width: 640px) {
   #sidebar-tab.open { left: 88vw; }
 }
