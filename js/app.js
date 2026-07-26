@@ -893,21 +893,21 @@
   }
 
   // ── sidebar: open/close via the left-edge tab (> to open, < to collapse) ─
+  // No darkening scrim and no click-outside-to-close: the map stays fully
+  // usable while the sidebar is open, and it only closes via the tab or the
+  // close (×) button.
   const sidebar = document.getElementById("sidebar");
-  const sidebarScrim = document.getElementById("sidebar-scrim");
   const sidebarTab = document.getElementById("sidebar-tab");
   let sidebarOpen = false;
   function setSidebarOpen(on) {
     sidebarOpen = on;
     sidebar.classList.toggle("open", on);
-    sidebarScrim.classList.toggle("show", on);
     sidebarTab.classList.toggle("open", on);
     sidebarTab.textContent = on ? "‹" : "›";
     if (on) renderFilterLists();
   }
   sidebarTab.addEventListener("click", () => setSidebarOpen(!sidebarOpen));
   document.getElementById("sidebar-close").addEventListener("click", () => setSidebarOpen(false));
-  sidebarScrim.addEventListener("click", () => setSidebarOpen(false));
 
   // ── sidebar: status switches ─────────────────────────────────────────
   const showDoneEl = document.getElementById("filter-show-done");
