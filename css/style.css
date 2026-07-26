@@ -458,13 +458,6 @@ body {
 @media (max-width: 640px) {
   #sidebar-tab.open { left: 88vw; }
 }
-#sidebar-scrim {
-  position: fixed; inset: 0; z-index: 1550;
-  background: rgba(0,0,0,0.4);
-  display: none;
-}
-#sidebar-scrim.show { display: block; }
-
 .sidebar-header {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 16px;
