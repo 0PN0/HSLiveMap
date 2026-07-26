@@ -964,6 +964,7 @@
   }
   sidebarTab.addEventListener("click", () => setSidebarOpen(!sidebarOpen));
   document.getElementById("sidebar-close").addEventListener("click", () => setSidebarOpen(false));
+  setSidebarOpen(true);
 
   // ── sidebar: status switches ─────────────────────────────────────────
   const showDoneEl = document.getElementById("filter-show-done");
