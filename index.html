@@ -24,12 +24,14 @@
 
   <div class="spacer"></div>
 
-  <button class="btn" id="filters-btn">Filters &amp; Style</button>
   <button class="btn" id="progress-btn">Progress</button>
   <button class="btn" id="owner-btn">Owner mode</button>
   <button class="btn" id="legend-btn">Legend</button>
   <button class="btn primary" id="add-marker-btn">+ Propose marker</button>
 </div>
+
+<!-- Edge tab: click to pop the sidebar open (>) or collapse it (<) -->
+<button id="sidebar-tab" title="Filters & style">›</button>
 
 <!-- Sidebar: filters (regions/tags/status) + bulk actions + appearance -->
 <aside id="sidebar">
@@ -66,6 +68,7 @@
   <div class="sidebar-section">
     <div class="sidebar-section-title">Bulk actions</div>
     <button class="btn" id="bulk-complete-btn" style="width:100%;">Drag to complete: off</button>
+    <p class="hint" style="margin:8px 0 0;">While on: left click still pans the map — hold the <b>right</b> mouse button and drag across markers to mark them completed. It only ever marks things complete, never the reverse.</p>
     <label class="check-row" style="margin-top:10px;">
       <input type="checkbox" id="instant-complete-toggle"> Click a marker = instant complete (skip the card)
     </label>
@@ -73,7 +76,14 @@
 
   <div class="sidebar-section">
     <div class="sidebar-section-title">Appearance</div>
-    <label class="check-row"><input type="checkbox" id="light-mode-toggle"> Light mode</label>
+    <label for="theme-select" style="display:block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--parchment-dim); margin-bottom: 6px;">Color theme</label>
+    <select id="theme-select">
+      <option value="dark">Dark (default)</option>
+      <option value="light">Light</option>
+      <option value="eastern">Eastern</option>
+      <option value="royal">Royal</option>
+      <option value="plasma">Plasma</option>
+    </select>
     <button class="btn" id="style-btn" style="width:100%;margin-top:10px;">Custom marker images…</button>
   </div>
 </aside>
