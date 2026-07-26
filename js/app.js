@@ -222,12 +222,15 @@
     // makes markers pop to their correct size once the zoom settles,
     // instead of scaling continuously and jarringly through it.
     markerZoomAnimation: false,
-    // Leaflet's built-in drag-to-pan is a left-button (and single-finger
-    // touch) gesture, but left click/tap is reserved for selecting markers
-    // here — panning is reimplemented by hand further down, on a held
-    // right mouse button (desktop) or a single-finger drag (touch).
-    dragging: false,
+    // Left-button/touch dragging pans normally. A held right mouse button
+    // also pans (reimplemented by hand further down, since Leaflet's own
+    // dragging handler only responds to the left button/touch). While
+    // "Drag to complete" mode is on, this gets disabled and the left
+    // button is repurposed to toggle markers instead — see the bulk
+    // actions section below.
+    dragging: true,
   });
+  map.zoomControl.setPosition("bottomright");
 
   const verifiedLayer = L.layerGroup().addTo(map);
   const pendingLayer = L.layerGroup(); // added/removed by the view toggle
@@ -997,21 +1000,26 @@
     });
   });
 
-  // ── panning + bulk actions: both live on the right mouse button ───────
-  // Left click/tap is reserved entirely for selecting a marker — the map's
-  // built-in left-button dragging is switched off at init (see map options
-  // above), and panning is reimplemented by hand here on a held right mouse
-  // button (desktop) or a single-finger drag (touch, which has no right
-  // button). When "Drag to complete" is on, the right button is repurposed:
-  // instead of panning, dragging across markers toggles them complete/not
-  // complete. Hit-testing is done by pixel distance from each marker's
-  // screen position rather than each marker's own DOM mouseover — the DOM
-  // approach silently misses whichever marker is underneath when two sit
-  // close enough to overlap, since only the topmost element gets pointer
-  // events. Each marker only flips once per drag stroke, so a lingering or
-  // jittery cursor doesn't flicker it back and forth.
+  // ── panning + bulk actions ──────────────────────────────────────────────
+  // Normally, either mouse button pans the map — left click/tap still opens
+  // a marker's card the same way it always has (Leaflet's own click-vs-drag
+  // detection handles that split for the left button; a held right button
+  // pans too, reimplemented by hand below since Leaflet only recognizes the
+  // left button/touch for its built-in dragging).
+  //
+  // While "Drag to complete" is on, the left button/touch is repurposed
+  // instead: holding it down and dragging across markers toggles them
+  // complete/not complete, and the map's own left-button dragging is
+  // switched off for the duration so the two don't fight over the same
+  // gesture. The right button keeps panning throughout, bulk mode or not.
+  //
+  // Hit-testing for the toggle is done by pixel distance from each
+  // marker's screen position rather than each marker's own DOM mouseover —
+  // the DOM approach silently misses whichever marker is underneath when
+  // two sit close enough to overlap, since only the topmost element gets
+  // pointer events. Each marker only flips once per drag stroke, so a
+  // lingering or jittery cursor doesn't flicker it back and forth.
   let bulkMode = false;
-  let rightMouseDown = false;
   let bulkTouchedThisDrag = null;
   let panActive = false;
   let panLast = null;
@@ -1057,43 +1065,47 @@
   const mapContainer = map.getContainer();
   mapContainer.addEventListener("contextmenu", (e) => e.preventDefault());
 
-  // -- desktop: right mouse button --
+  // -- right button: always pans, bulk mode or not --
   window.addEventListener("mousedown", (e) => {
     if (e.button !== 2) return;
     if (!mapContainer.contains(e.target)) return;
-    rightMouseDown = true;
-    if (bulkMode) {
-      bulkTouchedThisDrag = new Set();
-      bulkToggleAt(e.clientX, e.clientY);
-    } else {
-      startPan(e.clientX, e.clientY);
-    }
+    startPan(e.clientX, e.clientY);
+  }, true);
+  window.addEventListener("mousemove", (e) => movePan(e.clientX, e.clientY));
+  window.addEventListener("mouseup", (e) => { if (e.button === 2) endPan(); }, true);
+
+  // -- left button: only repurposed while bulk mode is on (otherwise
+  // Leaflet's own dragging handles left-button click/pan as normal) --
+  window.addEventListener("mousedown", (e) => {
+    if (e.button !== 0 || !bulkMode) return;
+    if (!mapContainer.contains(e.target)) return;
+    bulkTouchedThisDrag = new Set();
+    bulkToggleAt(e.clientX, e.clientY);
   }, true);
   window.addEventListener("mousemove", (e) => {
-    if (!rightMouseDown) return;
-    if (bulkMode) bulkToggleAt(e.clientX, e.clientY);
-    else movePan(e.clientX, e.clientY);
+    if (bulkMode && bulkTouchedThisDrag) bulkToggleAt(e.clientX, e.clientY);
   });
   window.addEventListener("mouseup", (e) => {
-    if (e.button !== 2) return;
-    rightMouseDown = false;
-    bulkTouchedThisDrag = null;
-    endPan();
+    if (e.button === 0) bulkTouchedThisDrag = null;
   }, true);
 
-  // -- touch: single-finger drag pans (no right button on touch, so bulk
-  // mode isn't reachable via touch — same as before). Two-plus fingers are
-  // left alone so Leaflet's own pinch-zoom handler still gets them. --
+  // -- touch: a single finger normally pans via Leaflet's own dragging.
+  // While bulk mode is on (and that dragging is switched off, see
+  // setBulkMode below) a single-finger drag toggles markers instead, same
+  // as the left button. There's no right-button equivalent on touch, so
+  // panning isn't reachable from a touch device while bulk mode is on —
+  // same limitation bulk mode has always had on touch. --
   mapContainer.addEventListener("touchstart", (e) => {
-    if (e.touches.length !== 1) { endPan(); return; }
-    startPan(e.touches[0].clientX, e.touches[0].clientY);
+    if (!bulkMode || e.touches.length !== 1) return;
+    bulkTouchedThisDrag = new Set();
+    bulkToggleAt(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
   mapContainer.addEventListener("touchmove", (e) => {
-    if (e.touches.length !== 1) return;
-    movePan(e.touches[0].clientX, e.touches[0].clientY);
+    if (!bulkMode || e.touches.length !== 1 || !bulkTouchedThisDrag) return;
+    bulkToggleAt(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
-  mapContainer.addEventListener("touchend", endPan);
-  mapContainer.addEventListener("touchcancel", endPan);
+  mapContainer.addEventListener("touchend", () => { bulkTouchedThisDrag = null; });
+  mapContainer.addEventListener("touchcancel", () => { bulkTouchedThisDrag = null; });
 
   const bulkBtn = document.getElementById("bulk-complete-btn");
   function setBulkMode(on) {
@@ -1101,7 +1113,10 @@
     bulkBtn.textContent = `Drag to complete: ${on ? "ON" : "off"}`;
     bulkBtn.classList.toggle("placing", on);
     if (on) {
-      toast("Left click still selects markers — hold the right mouse button and drag across markers to toggle them complete.", 5000);
+      map.dragging.disable();
+      toast("Left click (or drag) now toggles markers complete/not complete — hold the right mouse button to pan.", 5000);
+    } else {
+      map.dragging.enable();
     }
   }
   bulkBtn.addEventListener("click", () => setBulkMode(!bulkMode));

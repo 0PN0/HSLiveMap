@@ -9,6 +9,7 @@
   --pending:    #7c85c9;
   --adopt:      #caa14b;
   --danger:     #b5533f;
+  --pin-glow:   rgba(199, 138, 62, 0.65);
   --line:       rgba(236, 228, 211, 0.12);
   --shadow:     0 8px 28px rgba(0,0,0,0.45);
   --radius:     3px;
@@ -106,6 +107,11 @@ body {
 .btn.placing { background: var(--danger); border-color: var(--danger); color: var(--parchment); }
 .btn.danger { border-color: var(--danger); color: var(--danger); }
 .btn.danger:hover { background: var(--danger); color: var(--parchment); }
+#progress-btn {
+  border-color: var(--pending);
+  color: var(--pending);
+}
+#progress-btn:hover { background: var(--pending); border-color: var(--pending); color: var(--ink); }
 .owner-review-actions { display: flex; gap: 8px; margin-top: 8px; }
 .owner-review-actions .btn { flex: 1; padding: 6px 10px; font-size: 12px; }
 
@@ -240,7 +246,7 @@ body {
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   border: 2px solid var(--ink);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 10px 3px var(--pin-glow);
 }
 .pin.verified { background: var(--verified); }
 .pin.pending  { background: var(--pending); }
@@ -520,6 +526,7 @@ body[data-theme="light"] {
   --parchment-dim: #746a58;
   --line:       rgba(22,27,34,0.12);
   --shadow:     0 8px 28px rgba(0,0,0,0.15);
+  --pin-glow:   rgba(45, 130, 190, 0.5);
 }
 #theme-select {
   width: 100%;
@@ -552,6 +559,7 @@ body[data-theme="eastern"] {
   --danger:     #7a1f24;
   --line:       rgba(251, 238, 224, 0.14);
   --shadow:     0 8px 28px rgba(20, 4, 4, 0.5);
+  --pin-glow:   rgba(219, 165, 60, 0.7);
 }
 body[data-theme="eastern"] .pin,
 body[data-theme="eastern"] .pin-custom { border-color: #fbeee0; }
@@ -570,6 +578,7 @@ body[data-theme="royal"] {
   --danger:     #a23b4a;
   --line:       rgba(228, 214, 255, 0.14);
   --shadow:     0 8px 28px rgba(4, 0, 16, 0.55);
+  --pin-glow:   rgba(140, 110, 230, 0.65);
 }
 body[data-theme="royal"] .pin,
 body[data-theme="royal"] .pin-custom { border-color: #f3ecff; }
@@ -588,6 +597,7 @@ body[data-theme="plasma"] {
   --danger:     #ff4d4d;
   --line:       rgba(224, 71, 158, 0.18);
   --shadow:     0 8px 28px rgba(10, 0, 20, 0.55);
+  --pin-glow:   rgba(79, 245, 214, 0.7);
 }
 body[data-theme="plasma"] .pin,
 body[data-theme="plasma"] .pin-custom { border-color: #fbeaf6; }
