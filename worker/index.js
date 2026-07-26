@@ -73,6 +73,15 @@ function slugify(title) {
   );
 }
 
+// Parses an optional numeric form field ("" or missing -> null instead of NaN)
+function numOrNull(v) {
+  if (v === null || v === undefined) return null;
+  const s = v.toString().trim();
+  if (s === "") return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+
 // ── single-key marker index ──────────────────────────────────────────────
 async function loadIndex(env) {
   const raw = await env.MARKERS_KV.get(INDEX_KEY);
@@ -109,6 +118,9 @@ async function handleSubmit(request, env) {
   const comment = (form.get("comment") || "").toString().trim();
   const x = Number(form.get("x"));
   const y = Number(form.get("y"));
+  const x_ig = numOrNull(form.get("x_ig"));
+  const y_ig = numOrNull(form.get("y_ig"));
+  const z_ig = numOrNull(form.get("z_ig"));
   const tags = (form.get("tags") || "")
     .toString()
     .split(",")
@@ -145,6 +157,9 @@ async function handleSubmit(request, env) {
     tags,
     x,
     y,
+    x_ig,
+    y_ig,
+    z_ig,
     image,
     comment,
     status: admin ? "verified" : "pending",
