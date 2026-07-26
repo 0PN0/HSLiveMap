@@ -431,6 +431,33 @@ body {
   box-shadow: var(--shadow);
 }
 #sidebar.open { transform: translateX(0); }
+#sidebar-tab {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 1650;
+  width: 26px;
+  height: 58px;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  color: var(--brass);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: left 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sidebar-tab:hover { color: var(--parchment); }
+#sidebar-tab.open { left: 300px; }
+@media (max-width: 640px) {
+  #sidebar-tab.open { left: 88vw; }
+}
 #sidebar-scrim {
   position: fixed; inset: 0; z-index: 1550;
   background: rgba(0,0,0,0.4);
@@ -499,10 +526,76 @@ body[data-theme="light"] {
   --line:       rgba(22,27,34,0.12);
   --shadow:     0 8px 28px rgba(0,0,0,0.15);
 }
+#theme-select {
+  width: 100%;
+  background: var(--ink);
+  border: 1px solid var(--line);
+  color: var(--parchment);
+  padding: 9px 11px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+}
+#theme-select:focus { outline: none; border-color: var(--brass); }
+
 body[data-theme="light"] .pin,
 body[data-theme="light"] .pin-custom {
   border-color: #ffffff;
 }
+
+/* ── Eastern: vermillion shrine gates, cream paper, ink & gold ────────── */
+body[data-theme="eastern"] {
+  --ink:        #241012;
+  --ink-2:      #34181b;
+  --parchment:  #fbeee0;
+  --parchment-dim: #cba98f;
+  --brass:      #c5303f;
+  --brass-dim:  #8f2028;
+  --verified:   #6f8f5b;
+  --pending:    #9a7bc9;
+  --adopt:      #dba53c;
+  --danger:     #7a1f24;
+  --line:       rgba(251, 238, 224, 0.14);
+  --shadow:     0 8px 28px rgba(20, 4, 4, 0.5);
+}
+body[data-theme="eastern"] .pin,
+body[data-theme="eastern"] .pin-custom { border-color: #fbeee0; }
+
+/* ── Royal: deep amethyst and old gold ────────────────────────────────── */
+body[data-theme="royal"] {
+  --ink:        #120a24;
+  --ink-2:      #1d1140;
+  --parchment:  #f3ecff;
+  --parchment-dim: #b7a6d9;
+  --brass:      #d4af37;
+  --brass-dim:  #a3822a;
+  --verified:   #4f9d69;
+  --pending:    #6c7ee6;
+  --adopt:      #d4af37;
+  --danger:     #a23b4a;
+  --line:       rgba(228, 214, 255, 0.14);
+  --shadow:     0 8px 28px rgba(4, 0, 16, 0.55);
+}
+body[data-theme="royal"] .pin,
+body[data-theme="royal"] .pin-custom { border-color: #f3ecff; }
+
+/* ── Plasma: hot magenta/orange gradient energy ───────────────────────── */
+body[data-theme="plasma"] {
+  --ink:        #0a0016;
+  --ink-2:      #170027;
+  --parchment:  #fbeaf6;
+  --parchment-dim: #c497bd;
+  --brass:      #e0479e;
+  --brass-dim:  #9c2f79;
+  --verified:   #2fc9a0;
+  --pending:    #4d5fe0;
+  --adopt:      #f4a300;
+  --danger:     #ff4d4d;
+  --line:       rgba(224, 71, 158, 0.18);
+  --shadow:     0 8px 28px rgba(10, 0, 20, 0.55);
+}
+body[data-theme="plasma"] .pin,
+body[data-theme="plasma"] .pin-custom { border-color: #fbeaf6; }
 
 /* ══════════════════════════════════════════════════════════════════════
    Lightbox (click a marker photo to enlarge)
