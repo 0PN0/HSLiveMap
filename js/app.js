@@ -52,13 +52,14 @@
       return {
         theme: ["light", "eastern", "royal", "plasma"].includes(s.theme) ? s.theme : "dark",
         instantComplete: !!s.instantComplete,
+        pinGlow: !!s.pinGlow,
         showDone: s.showDone !== false,
         showNotDone: s.showNotDone !== false,
         regions: s.regions && typeof s.regions === "object" ? s.regions : {},
         tags: s.tags && typeof s.tags === "object" ? s.tags : {},
       };
     } catch {
-      return { theme: "dark", instantComplete: false, showDone: true, showNotDone: true, regions: {}, tags: {} };
+      return { theme: "dark", instantComplete: false, pinGlow: false, showDone: true, showNotDone: true, regions: {}, tags: {} };
     }
   }
   const settings = loadSettings();
@@ -1199,6 +1200,19 @@
     saveSettings();
     applyTheme();
   });
+
+  // ── appearance: glow around default markers (off by default) ─────────
+  const pinGlowToggle = document.getElementById("pin-glow-toggle");
+  function applyPinGlow() {
+    document.body.classList.toggle("pin-glow-on", settings.pinGlow);
+    pinGlowToggle.checked = settings.pinGlow;
+  }
+  pinGlowToggle.addEventListener("change", () => {
+    settings.pinGlow = pinGlowToggle.checked;
+    saveSettings();
+    applyPinGlow();
+  });
+  applyPinGlow();
 
   // ── appearance: custom per-type marker images ────────────────────────
   const styleModal = document.getElementById("style-modal");
