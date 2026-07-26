@@ -222,6 +222,11 @@
     // makes markers pop to their correct size once the zoom settles,
     // instead of scaling continuously and jarringly through it.
     markerZoomAnimation: false,
+    // Leaflet's built-in drag-to-pan is a left-button (and single-finger
+    // touch) gesture, but left click/tap is reserved for selecting markers
+    // here — panning is reimplemented by hand further down, on a held
+    // right mouse button (desktop) or a single-finger drag (touch).
+    dragging: false,
   });
 
   const verifiedLayer = L.layerGroup().addTo(map);
@@ -353,7 +358,6 @@
           .addTo(verifiedLayer);
         registry.set(id, { marker, data: m, pending: null });
         markerToId.set(marker, id);
-        attachDragCompleteHandlers(marker, id);
       });
       updateProgressCount();
       renderTagChips();
@@ -380,7 +384,6 @@
           .addTo(pendingLayer);
         registry.set(id, { marker, data: m, pending: {} });
         markerToId.set(marker, id);
-        attachDragCompleteHandlers(marker, id);
       });
       pendingLoaded = true;
       updateProgressCount();
@@ -994,17 +997,103 @@
     });
   });
 
-  // ── bulk actions: drag-to-complete ────────────────────────────────────
-  // Left click is always reserved for panning the map. This feature uses a
-  // held RIGHT mouse button instead, so the two never fight over the same
-  // gesture and the map never needs its normal dragging disabled. It only
-  // ever marks a marker complete — it can never undo a completed one
-  // (chests included), even if you drag back over it.
+  // ── panning + bulk actions: both live on the right mouse button ───────
+  // Left click/tap is reserved entirely for selecting a marker — the map's
+  // built-in left-button dragging is switched off at init (see map options
+  // above), and panning is reimplemented by hand here on a held right mouse
+  // button (desktop) or a single-finger drag (touch, which has no right
+  // button). When "Drag to complete" is on, the right button is repurposed:
+  // instead of panning, dragging across markers toggles them complete/not
+  // complete. Hit-testing is done by pixel distance from each marker's
+  // screen position rather than each marker's own DOM mouseover — the DOM
+  // approach silently misses whichever marker is underneath when two sit
+  // close enough to overlap, since only the topmost element gets pointer
+  // events. Each marker only flips once per drag stroke, so a lingering or
+  // jittery cursor doesn't flicker it back and forth.
   let bulkMode = false;
   let rightMouseDown = false;
-  document.addEventListener("mousedown", (e) => { if (e.button === 2) rightMouseDown = true; });
-  document.addEventListener("mouseup", (e) => { if (e.button === 2) rightMouseDown = false; });
-  map.getContainer().addEventListener("contextmenu", (e) => { if (bulkMode) e.preventDefault(); });
+  let bulkTouchedThisDrag = null;
+  let panActive = false;
+  let panLast = null;
+
+  function cursorForIdleMap() {
+    return placing ? "crosshair" : "";
+  }
+  function startPan(x, y) {
+    panActive = true;
+    panLast = { x, y };
+    mapContainer.style.cursor = "grabbing";
+  }
+  function movePan(x, y) {
+    if (!panActive) return;
+    map.panBy([panLast.x - x, panLast.y - y], { animate: false });
+    panLast = { x, y };
+  }
+  function endPan() {
+    panActive = false;
+    mapContainer.style.cursor = cursorForIdleMap();
+  }
+
+  const BULK_HIT_RADIUS = 16; // screen px
+  function bulkToggleAt(clientX, clientY) {
+    if (!bulkTouchedThisDrag) return;
+    const rect = mapContainer.getBoundingClientRect();
+    const pt = L.point(clientX - rect.left, clientY - rect.top);
+    let changed = false;
+    registry.forEach((entry, id) => {
+      if (bulkTouchedThisDrag.has(id)) return;
+      if (!map.hasLayer(entry.marker)) return; // respects current filters/view
+      const p = map.latLngToContainerPoint(entry.marker.getLatLng());
+      const dx = p.x - pt.x, dy = p.y - pt.y;
+      if (dx * dx + dy * dy > BULK_HIT_RADIUS * BULK_HIT_RADIUS) return;
+      bulkTouchedThisDrag.add(id);
+      setDone(id, !isDone(id));
+      refreshMarkerVisual(id);
+      changed = true;
+    });
+    if (changed) { updateProgressCount(); applyFilters(); }
+  }
+
+  const mapContainer = map.getContainer();
+  mapContainer.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  // -- desktop: right mouse button --
+  window.addEventListener("mousedown", (e) => {
+    if (e.button !== 2) return;
+    if (!mapContainer.contains(e.target)) return;
+    rightMouseDown = true;
+    if (bulkMode) {
+      bulkTouchedThisDrag = new Set();
+      bulkToggleAt(e.clientX, e.clientY);
+    } else {
+      startPan(e.clientX, e.clientY);
+    }
+  }, true);
+  window.addEventListener("mousemove", (e) => {
+    if (!rightMouseDown) return;
+    if (bulkMode) bulkToggleAt(e.clientX, e.clientY);
+    else movePan(e.clientX, e.clientY);
+  });
+  window.addEventListener("mouseup", (e) => {
+    if (e.button !== 2) return;
+    rightMouseDown = false;
+    bulkTouchedThisDrag = null;
+    endPan();
+  }, true);
+
+  // -- touch: single-finger drag pans (no right button on touch, so bulk
+  // mode isn't reachable via touch — same as before). Two-plus fingers are
+  // left alone so Leaflet's own pinch-zoom handler still gets them. --
+  mapContainer.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) { endPan(); return; }
+    startPan(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  mapContainer.addEventListener("touchmove", (e) => {
+    if (e.touches.length !== 1) return;
+    movePan(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  mapContainer.addEventListener("touchend", endPan);
+  mapContainer.addEventListener("touchcancel", endPan);
 
   const bulkBtn = document.getElementById("bulk-complete-btn");
   function setBulkMode(on) {
@@ -1012,29 +1101,10 @@
     bulkBtn.textContent = `Drag to complete: ${on ? "ON" : "off"}`;
     bulkBtn.classList.toggle("placing", on);
     if (on) {
-      toast("Left click still pans the map — hold the right mouse button and drag across markers to complete them.", 5000);
+      toast("Left click still selects markers — hold the right mouse button and drag across markers to toggle them complete.", 5000);
     }
   }
   bulkBtn.addEventListener("click", () => setBulkMode(!bulkMode));
-
-  function completeFromBulkDrag(id) {
-    if (isDone(id)) return; // never uncompletes, chests included
-    setDone(id, true);
-    refreshMarkerVisual(id);
-    updateProgressCount();
-    applyFilters();
-  }
-  function attachDragCompleteHandlers(marker, id) {
-    marker.on("mousedown", (e) => {
-      if (bulkMode && e.originalEvent && e.originalEvent.button === 2) {
-        L.DomEvent.preventDefault(e.originalEvent);
-        completeFromBulkDrag(id);
-      }
-    });
-    marker.on("mouseover", () => {
-      if (bulkMode && rightMouseDown) completeFromBulkDrag(id);
-    });
-  }
 
   // ── instant complete: clicking a marker completes it instead of opening
   // its card. Also used to swallow the popup that a bulk-mode click/drag
